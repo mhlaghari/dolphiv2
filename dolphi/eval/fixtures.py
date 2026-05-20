@@ -25,10 +25,9 @@ the thesis depends on — not opinions, not value judgments. The eval treats
 these as ground truth; falsifiers are graded on whether they actually
 threaten one of these claims.
 
-Coverage targets (v0.2.0): AI capex, semiconductor pricing power, energy
-transition, GLP-1 demand, defence procurement, China/ADR overhang, regional
-banking, REIT rate sensitivity. v0.2.0 ships with the first three; the
-remaining five are flagged as TODO in PLAN.md.
+Coverage (v0.2.0): all eight fixtures ship — AI capex, semiconductor
+pricing power, energy transition, GLP-1 demand, defence procurement,
+China/ADR overhang, regional banking, REIT rate sensitivity.
 """
 
 from __future__ import annotations
@@ -120,13 +119,142 @@ _ENERGY_TRANSITION = BullCaseFixture(
 )
 
 
-def all_fixtures() -> list[BullCaseFixture]:
-    """Return all shipped fixtures in stable order.
+_GLP_1 = BullCaseFixture(
+    slug="glp-1",
+    title="GLP-1 obesity-drug demand sustains pricing power through 2027",
+    symbol="LLY",
+    sector="Healthcare",
+    thesis=(
+        "Tirzepatide (Mounjaro / Zepbound) and the next-generation oral and "
+        "long-acting injectables keep Lilly at the centre of the obesity "
+        "category. Insurance coverage expands as outcomes data (cardio, renal, "
+        "MASH) accumulates. Manufacturing capacity catches up faster than "
+        "demand, but real-world adherence keeps Rx volume growing at "
+        "high-double-digit YoY rates through 2027."
+    ),
+    assumptions=(
+        "Tirzepatide US retail prescription volume grows at least 30% YoY "
+        "through end of 2027.",
+        "At least 60% of large US employer-sponsored health plans cover "
+        "GLP-1s for obesity (not just diabetes) by end of 2026.",
+        "No new entrant captures more than 15% of the GLP-1 obesity market "
+        "(by US Rx share) before 2028.",
+    ),
+)
 
-    Add new fixtures here as they are written. Order is preserved in the
-    leaderboard report.
+
+_DEFENCE_PROCUREMENT = BullCaseFixture(
+    slug="defence-procurement",
+    title="Sustained US + NATO procurement budgets through 2028",
+    symbol="LMT",
+    sector="Industrials",
+    thesis=(
+        "Geopolitical realignment forces structurally higher defence spending: "
+        "European NATO members crossing the 2% GDP floor, US DoD topline above "
+        "$900B, and replenishment cycles for Ukraine-depleted munitions and "
+        "missile-defence stocks. Lockheed's F-35, PAC-3, HIMARS, and CH-53K "
+        "franchises sit at the centre of those budgets with multi-year "
+        "backlogs."
+    ),
+    assumptions=(
+        "US Department of Defense base topline (excluding OCO) grows at least "
+        "3% nominal each year through FY2028.",
+        "At least 18 of 32 NATO members meet or exceed the 2% of GDP defence "
+        "spending floor by end of 2027.",
+        "Lockheed Martin's reported backlog stays above $150B at every fiscal "
+        "year-end through 2027.",
+    ),
+)
+
+
+_CHINA_ADR_OVERHANG = BullCaseFixture(
+    slug="china-adr-overhang",
+    title="Sentiment normalisation lifts US-listed China ADRs",
+    symbol="BABA",
+    sector="Consumer Cyclical",
+    thesis=(
+        "China policy easing (consumption stimulus, property-sector "
+        "stabilisation, AI champion support) plus PCAOB audit clarity reduce "
+        "the delisting tail risk that has compressed multiples on US-listed "
+        "China ADRs since 2021. Alibaba's cloud + AI franchise re-rates as "
+        "domestic AI capex accelerates and its core commerce stabilises GMV "
+        "share."
+    ),
+    assumptions=(
+        "PCAOB inspection access to China-based auditors is renewed at every "
+        "annual review through 2027 without material restriction.",
+        "Alibaba Cloud revenue grows at least 15% YoY in each of the next "
+        "eight reported quarters.",
+        "Chinese household-consumption growth (NBS retail sales ex-auto) "
+        "exceeds 5% YoY in at least three of the next four calendar quarters.",
+    ),
+)
+
+
+_REGIONAL_BANKING = BullCaseFixture(
+    slug="regional-banking",
+    title="Regional bank NIM recovery as the curve steepens",
+    symbol="KEY",
+    sector="Financial Services",
+    thesis=(
+        "Post-SVB deposit costs have peaked and start to roll lower as the "
+        "Fed cuts the front end while the long end stays anchored above 4%. "
+        "Net interest margin expands ~25-40 bps from trough through 2026. "
+        "Office-CRE losses are mostly reserved-for at this point; loan-loss "
+        "provisioning normalises. KeyCorp's fee-income mix and the Laurel Road "
+        "consumer franchise are under-appreciated."
+    ),
+    assumptions=(
+        "The 2s10s US Treasury spread stays positive on at least 80% of "
+        "trading days through end of 2026.",
+        "KeyCorp's net interest margin expands at least 20 bps from its 2024 "
+        "trough by end of fiscal 2026.",
+        "Office-CRE net charge-off rate at US regional banks (FDIC data) "
+        "peaks below 2.5% and declines YoY by end of 2026.",
+    ),
+)
+
+
+_REIT_RATE_SENSITIVITY = BullCaseFixture(
+    slug="reit-rate-sensitivity",
+    title="Cell-tower REIT re-rates as the 10y comes off the highs",
+    symbol="AMT",
+    sector="Real Estate",
+    thesis=(
+        "Tower REITs have been a duration trade in disguise: when the US 10y "
+        "settles into a 3.5-4.5% range from the 2023 highs, AMT's discount "
+        "rate falls and its AFFO multiple re-rates. Mobile-data traffic "
+        "growth (5G mid-band densification, fixed-wireless access) supports "
+        "mid-single-digit organic leasing growth. India divestiture removes "
+        "an FX/risk drag."
+    ),
+    assumptions=(
+        "The US 10-year Treasury yield's monthly average stays below 4.5% in "
+        "at least nine of the twelve months of 2026.",
+        "American Tower's organic tenant billings growth stays above 5% YoY "
+        "in each of the next eight reported quarters.",
+        "AMT achieves an investment-grade credit rating from at least two of "
+        "S&P / Moody's / Fitch at every quarter-end through 2027.",
+    ),
+)
+
+
+def all_fixtures() -> list[BullCaseFixture]:
+    """Return all shipped fixtures in stable order (alphabetical by slug).
+
+    Add new fixtures here as they are written. The leaderboard report
+    relies on the stable order so re-runs compare like-for-like.
     """
-    return [_AI_CAPEX, _SEMI_PRICING_POWER, _ENERGY_TRANSITION]
+    return [
+        _AI_CAPEX,
+        _CHINA_ADR_OVERHANG,
+        _DEFENCE_PROCUREMENT,
+        _ENERGY_TRANSITION,
+        _GLP_1,
+        _REGIONAL_BANKING,
+        _REIT_RATE_SENSITIVITY,
+        _SEMI_PRICING_POWER,
+    ]
 
 
 def fixtures_by_slug(slugs: list[str] | None) -> list[BullCaseFixture]:
