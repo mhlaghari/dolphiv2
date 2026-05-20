@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dolphi"
+version = "0.2.0-dev"
+description = "Multi-agent investment researcher that proves itself wrong before recommending anything."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "langgraph>=0.2.0",
+    "chromadb>=0.5.0",
+    "sentence-transformers>=3.0.0",
+    "yfinance>=0.2.0",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+    "click>=8.1.0",
+    "rich>=13.7.0",
+    "typing-extensions>=4.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.8.0",
+]
+eval = [
+    "anthropic>=0.40.0",
+    "openai>=1.0.0",
+]
+
+[project.scripts]
+dolphi = "dolphi.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["dolphi*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"

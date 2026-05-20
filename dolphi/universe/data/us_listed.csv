@@ -1,0 +1,181 @@
+symbol,name,asset_type,sector,industry,exchange,is_adr
+AAPL,Apple,stock,Technology,Consumer Electronics,NASDAQ,false
+MSFT,Microsoft,stock,Technology,Software,NASDAQ,false
+GOOGL,Alphabet (Class A),stock,Communication Services,Internet Content,NASDAQ,false
+GOOG,Alphabet (Class C),stock,Communication Services,Internet Content,NASDAQ,false
+AMZN,Amazon,stock,Consumer Cyclical,Internet Retail,NASDAQ,false
+META,Meta Platforms,stock,Communication Services,Internet Content,NASDAQ,false
+NVDA,NVIDIA,stock,Technology,Semiconductors,NASDAQ,false
+AMD,Advanced Micro Devices,stock,Technology,Semiconductors,NASDAQ,false
+AVGO,Broadcom,stock,Technology,Semiconductors,NASDAQ,false
+INTC,Intel,stock,Technology,Semiconductors,NASDAQ,false
+ORCL,Oracle,stock,Technology,Software,NYSE,false
+CSCO,Cisco Systems,stock,Technology,Communication Equipment,NASDAQ,false
+CRM,Salesforce,stock,Technology,Software,NYSE,false
+ADBE,Adobe,stock,Technology,Software,NASDAQ,false
+NOW,ServiceNow,stock,Technology,Software,NYSE,false
+PLTR,Palantir Technologies,stock,Technology,Software,NASDAQ,false
+IBM,IBM,stock,Technology,IT Services,NYSE,false
+INTU,Intuit,stock,Technology,Software,NASDAQ,false
+QCOM,Qualcomm,stock,Technology,Semiconductors,NASDAQ,false
+TXN,Texas Instruments,stock,Technology,Semiconductors,NASDAQ,false
+AMAT,Applied Materials,stock,Technology,Semiconductor Equipment,NASDAQ,false
+LRCX,Lam Research,stock,Technology,Semiconductor Equipment,NASDAQ,false
+MU,Micron Technology,stock,Technology,Memory,NASDAQ,false
+KLAC,KLA Corporation,stock,Technology,Semiconductor Equipment,NASDAQ,false
+ARM,Arm Holdings,stock,Technology,Semiconductors,NASDAQ,true
+PANW,Palo Alto Networks,stock,Technology,Software,NASDAQ,false
+CRWD,CrowdStrike,stock,Technology,Software,NASDAQ,false
+SNOW,Snowflake,stock,Technology,Software,NYSE,false
+NET,Cloudflare,stock,Technology,Software,NYSE,false
+ZS,Zscaler,stock,Technology,Software,NASDAQ,false
+DDOG,Datadog,stock,Technology,Software,NASDAQ,false
+SHOP,Shopify,stock,Technology,Software,NYSE,true
+UBER,Uber Technologies,stock,Technology,Software,NYSE,false
+ABNB,Airbnb,stock,Consumer Cyclical,Travel Services,NASDAQ,false
+COIN,Coinbase Global,stock,Financial Services,Capital Markets,NASDAQ,false
+RBLX,Roblox,stock,Communication Services,Interactive Media,NYSE,false
+SPOT,Spotify Technology,stock,Communication Services,Interactive Media,NYSE,true
+JPM,JPMorgan Chase,stock,Financial Services,Banks,NYSE,false
+BAC,Bank of America,stock,Financial Services,Banks,NYSE,false
+WFC,Wells Fargo,stock,Financial Services,Banks,NYSE,false
+C,Citigroup,stock,Financial Services,Banks,NYSE,false
+GS,Goldman Sachs,stock,Financial Services,Capital Markets,NYSE,false
+MS,Morgan Stanley,stock,Financial Services,Capital Markets,NYSE,false
+BLK,BlackRock,stock,Financial Services,Asset Management,NYSE,false
+AXP,American Express,stock,Financial Services,Credit Services,NYSE,false
+V,Visa,stock,Financial Services,Credit Services,NYSE,false
+MA,Mastercard,stock,Financial Services,Credit Services,NYSE,false
+SCHW,Charles Schwab,stock,Financial Services,Capital Markets,NYSE,false
+COF,Capital One Financial,stock,Financial Services,Credit Services,NYSE,false
+USB,U.S. Bancorp,stock,Financial Services,Banks,NYSE,false
+PNC,PNC Financial Services,stock,Financial Services,Banks,NYSE,false
+CB,Chubb,stock,Financial Services,Insurance,NYSE,true
+MMC,Marsh & McLennan,stock,Financial Services,Insurance Brokers,NYSE,false
+UNH,UnitedHealth Group,stock,Healthcare,Healthcare Plans,NYSE,false
+JNJ,Johnson & Johnson,stock,Healthcare,Drug Manufacturers,NYSE,false
+LLY,Eli Lilly,stock,Healthcare,Drug Manufacturers,NYSE,false
+PFE,Pfizer,stock,Healthcare,Drug Manufacturers,NYSE,false
+ABBV,AbbVie,stock,Healthcare,Drug Manufacturers,NYSE,false
+MRK,Merck,stock,Healthcare,Drug Manufacturers,NYSE,false
+TMO,Thermo Fisher Scientific,stock,Healthcare,Diagnostics & Research,NYSE,false
+ABT,Abbott Laboratories,stock,Healthcare,Medical Devices,NYSE,false
+DHR,Danaher,stock,Healthcare,Diagnostics & Research,NYSE,false
+BMY,Bristol-Myers Squibb,stock,Healthcare,Drug Manufacturers,NYSE,false
+AMGN,Amgen,stock,Healthcare,Drug Manufacturers,NASDAQ,false
+ELV,Elevance Health,stock,Healthcare,Healthcare Plans,NYSE,false
+CVS,CVS Health,stock,Healthcare,Healthcare Plans,NYSE,false
+GILD,Gilead Sciences,stock,Healthcare,Drug Manufacturers,NASDAQ,false
+REGN,Regeneron Pharmaceuticals,stock,Healthcare,Drug Manufacturers,NASDAQ,false
+VRTX,Vertex Pharmaceuticals,stock,Healthcare,Drug Manufacturers,NASDAQ,false
+ISRG,Intuitive Surgical,stock,Healthcare,Medical Devices,NASDAQ,false
+TSLA,Tesla,stock,Consumer Cyclical,Auto Manufacturers,NASDAQ,false
+HD,Home Depot,stock,Consumer Cyclical,Home Improvement Retail,NYSE,false
+NKE,Nike,stock,Consumer Cyclical,Apparel,NYSE,false
+MCD,McDonald's,stock,Consumer Cyclical,Restaurants,NYSE,false
+SBUX,Starbucks,stock,Consumer Cyclical,Restaurants,NASDAQ,false
+LOW,Lowe's Companies,stock,Consumer Cyclical,Home Improvement Retail,NYSE,false
+BKNG,Booking Holdings,stock,Consumer Cyclical,Travel Services,NASDAQ,false
+TJX,TJX Companies,stock,Consumer Cyclical,Apparel Retail,NYSE,false
+MAR,Marriott International,stock,Consumer Cyclical,Lodging,NASDAQ,false
+WMT,Walmart,stock,Consumer Defensive,Discount Stores,NYSE,false
+COST,Costco Wholesale,stock,Consumer Defensive,Discount Stores,NASDAQ,false
+PG,Procter & Gamble,stock,Consumer Defensive,Household Products,NYSE,false
+KO,Coca-Cola,stock,Consumer Defensive,Beverages,NYSE,false
+PEP,PepsiCo,stock,Consumer Defensive,Beverages,NASDAQ,false
+PM,Philip Morris International,stock,Consumer Defensive,Tobacco,NYSE,false
+MO,Altria Group,stock,Consumer Defensive,Tobacco,NYSE,false
+MDLZ,Mondelez International,stock,Consumer Defensive,Confectioners,NASDAQ,false
+CL,Colgate-Palmolive,stock,Consumer Defensive,Household Products,NYSE,false
+DIS,Walt Disney,stock,Communication Services,Entertainment,NYSE,false
+NFLX,Netflix,stock,Communication Services,Entertainment,NASDAQ,false
+CMCSA,Comcast,stock,Communication Services,Telecom Services,NASDAQ,false
+T,AT&T,stock,Communication Services,Telecom Services,NYSE,false
+VZ,Verizon Communications,stock,Communication Services,Telecom Services,NYSE,false
+TMUS,T-Mobile US,stock,Communication Services,Telecom Services,NASDAQ,false
+CAT,Caterpillar,stock,Industrials,Farm & Heavy Construction Machinery,NYSE,false
+BA,Boeing,stock,Industrials,Aerospace & Defense,NYSE,false
+GE,GE Aerospace,stock,Industrials,Aerospace & Defense,NYSE,false
+HON,Honeywell International,stock,Industrials,Conglomerates,NASDAQ,false
+UNP,Union Pacific,stock,Industrials,Railroads,NYSE,false
+RTX,RTX Corporation,stock,Industrials,Aerospace & Defense,NYSE,false
+ETN,Eaton,stock,Industrials,Electrical Equipment,NYSE,false
+LMT,Lockheed Martin,stock,Industrials,Aerospace & Defense,NYSE,false
+DE,Deere & Company,stock,Industrials,Farm & Heavy Construction Machinery,NYSE,false
+UPS,United Parcel Service,stock,Industrials,Integrated Freight & Logistics,NYSE,false
+XOM,Exxon Mobil,stock,Energy,Oil & Gas Integrated,NYSE,false
+CVX,Chevron,stock,Energy,Oil & Gas Integrated,NYSE,false
+COP,ConocoPhillips,stock,Energy,Oil & Gas E&P,NYSE,false
+SLB,Schlumberger,stock,Energy,Oil & Gas Equipment & Services,NYSE,false
+EOG,EOG Resources,stock,Energy,Oil & Gas E&P,NYSE,false
+NEE,NextEra Energy,stock,Utilities,Renewable Utilities,NYSE,false
+SO,Southern Company,stock,Utilities,Electric Utilities,NYSE,false
+DUK,Duke Energy,stock,Utilities,Electric Utilities,NYSE,false
+CEG,Constellation Energy,stock,Utilities,Electric Utilities,NASDAQ,false
+VST,Vistra,stock,Utilities,Electric Utilities,NYSE,false
+AEP,American Electric Power,stock,Utilities,Electric Utilities,NASDAQ,false
+EXC,Exelon,stock,Utilities,Electric Utilities,NASDAQ,false
+LIN,Linde,stock,Materials,Specialty Chemicals,NASDAQ,false
+APD,Air Products and Chemicals,stock,Materials,Specialty Chemicals,NYSE,false
+SHW,Sherwin-Williams,stock,Materials,Specialty Chemicals,NYSE,false
+FCX,Freeport-McMoRan,stock,Materials,Copper,NYSE,false
+TSM,Taiwan Semiconductor Manufacturing,stock,Technology,Semiconductors,NYSE,true
+ASML,ASML Holding,stock,Technology,Semiconductor Equipment,NASDAQ,true
+BABA,Alibaba Group Holding,stock,Consumer Cyclical,Internet Retail,NYSE,true
+JD,JD.com,stock,Consumer Cyclical,Internet Retail,NASDAQ,true
+SE,Sea,stock,Communication Services,Interactive Media,NYSE,true
+TCEHY,Tencent Holdings,stock,Communication Services,Interactive Media,NYSE,true
+PDD,PDD Holdings,stock,Consumer Cyclical,Internet Retail,NASDAQ,true
+SONY,Sony Group,stock,Communication Services,Consumer Electronics,NYSE,true
+TM,Toyota Motor,stock,Consumer Cyclical,Auto Manufacturers,NYSE,true
+HMC,Honda Motor,stock,Consumer Cyclical,Auto Manufacturers,NYSE,true
+NVO,Novo Nordisk,stock,Healthcare,Drug Manufacturers,NYSE,true
+AZN,AstraZeneca,stock,Healthcare,Drug Manufacturers,NASDAQ,true
+GSK,GSK,stock,Healthcare,Drug Manufacturers,NYSE,true
+SHEL,Shell,stock,Energy,Oil & Gas Integrated,NYSE,true
+BP,BP,stock,Energy,Oil & Gas Integrated,NYSE,true
+HSBC,HSBC Holdings,stock,Financial Services,Banks,NYSE,true
+UL,Unilever,stock,Consumer Defensive,Household Products,NYSE,true
+SAP,SAP,stock,Technology,Software,NYSE,true
+RIO,Rio Tinto,stock,Materials,Industrial Metals & Mining,NYSE,true
+BHP,BHP Group,stock,Materials,Industrial Metals & Mining,NYSE,true
+SPY,SPDR S&P 500 ETF,etf,Broad Market,Large Cap ETF,NYSEARCA,false
+QQQ,Invesco QQQ Trust,etf,Broad Market,Growth ETF,NASDAQ,false
+VTI,Vanguard Total Stock Market ETF,etf,Broad Market,Total Market ETF,NYSEARCA,false
+DIA,SPDR Dow Jones Industrial Average ETF,etf,Broad Market,Large Cap ETF,NYSEARCA,false
+IWM,iShares Russell 2000 ETF,etf,Broad Market,Small Cap ETF,NYSEARCA,false
+VOO,Vanguard S&P 500 ETF,etf,Broad Market,Large Cap ETF,NYSEARCA,false
+IVV,iShares Core S&P 500 ETF,etf,Broad Market,Large Cap ETF,NYSEARCA,false
+XLK,Technology Select Sector SPDR,etf,Technology,Sector ETF,NYSEARCA,false
+XLF,Financial Select Sector SPDR,etf,Financial Services,Sector ETF,NYSEARCA,false
+XLV,Health Care Select Sector SPDR,etf,Healthcare,Sector ETF,NYSEARCA,false
+XLY,Consumer Discretionary Select Sector SPDR,etf,Consumer Cyclical,Sector ETF,NYSEARCA,false
+XLP,Consumer Staples Select Sector SPDR,etf,Consumer Defensive,Sector ETF,NYSEARCA,false
+XLE,Energy Select Sector SPDR,etf,Energy,Sector ETF,NYSEARCA,false
+XLI,Industrial Select Sector SPDR,etf,Industrials,Sector ETF,NYSEARCA,false
+XLU,Utilities Select Sector SPDR,etf,Utilities,Sector ETF,NYSEARCA,false
+XLB,Materials Select Sector SPDR,etf,Materials,Sector ETF,NYSEARCA,false
+XLRE,Real Estate Select Sector SPDR,etf,Real Estate,Sector ETF,NYSEARCA,false
+XLC,Communication Services Select Sector SPDR,etf,Communication Services,Sector ETF,NYSEARCA,false
+SMH,VanEck Semiconductor ETF,etf,Technology,Semiconductor ETF,NASDAQ,false
+SOXX,iShares Semiconductor ETF,etf,Technology,Semiconductor ETF,NASDAQ,false
+KRE,SPDR S&P Regional Banking ETF,etf,Financial Services,Banking ETF,NYSEARCA,false
+IBB,iShares Biotechnology ETF,etf,Healthcare,Biotech ETF,NASDAQ,false
+XOP,SPDR S&P Oil & Gas E&P ETF,etf,Energy,Oil & Gas ETF,NYSEARCA,false
+BND,Vanguard Total Bond Market ETF,etf,Fixed Income,Bond ETF,NASDAQ,false
+AGG,iShares Core U.S. Aggregate Bond ETF,etf,Fixed Income,Bond ETF,NYSEARCA,false
+TLT,iShares 20+ Year Treasury Bond ETF,etf,Fixed Income,Bond ETF,NASDAQ,false
+IEF,iShares 7-10 Year Treasury Bond ETF,etf,Fixed Income,Bond ETF,NASDAQ,false
+SHY,iShares 1-3 Year Treasury Bond ETF,etf,Fixed Income,Bond ETF,NASDAQ,false
+LQD,iShares iBoxx Investment Grade Corporate Bond ETF,etf,Fixed Income,Bond ETF,NYSEARCA,false
+HYG,iShares iBoxx High Yield Corporate Bond ETF,etf,Fixed Income,Bond ETF,NYSEARCA,false
+MUB,iShares National Muni Bond ETF,etf,Fixed Income,Bond ETF,NYSEARCA,false
+VEA,Vanguard FTSE Developed Markets ETF,etf,International,International ETF,NYSEARCA,false
+VWO,Vanguard FTSE Emerging Markets ETF,etf,International,Emerging Markets ETF,NYSEARCA,false
+EFA,iShares MSCI EAFE ETF,etf,International,International ETF,NYSEARCA,false
+EEM,iShares MSCI Emerging Markets ETF,etf,International,Emerging Markets ETF,NYSEARCA,false
+ACWI,iShares MSCI ACWI ETF,etf,Broad Market,Global ETF,NASDAQ,false
+GLD,SPDR Gold Shares,etf,Commodities,Gold ETF,NYSEARCA,false
+SLV,iShares Silver Trust,etf,Commodities,Silver ETF,NYSEARCA,false
+USO,United States Oil Fund,etf,Commodities,Oil ETF,NYSEARCA,false
+VNQ,Vanguard Real Estate ETF,etf,Real Estate,Real Estate ETF,NYSEARCA,false

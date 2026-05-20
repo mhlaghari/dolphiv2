@@ -1,0 +1,49 @@
+{
+  "start_date": "2026-01-31",
+  "end_date": "2026-05-20",
+  "source": "decision_log",
+  "periods": 4,
+  "total_return_portfolio_pct": 0.0,
+  "total_return_spy_pct": 0.0,
+  "alpha_pct": 0.0,
+  "max_drawdown_portfolio_pct": 0.0,
+  "rebalance_dates": [
+    "2026-01-31",
+    "2026-02-28",
+    "2026-03-31",
+    "2026-04-30",
+    "2026-05-20"
+  ],
+  "portfolio_equity": [
+    100.0,
+    100.0,
+    100.0,
+    100.0,
+    100.0
+  ],
+  "spy_equity": [
+    100.0,
+    100.0,
+    100.0,
+    100.0,
+    100.0
+  ],
+  "period_returns_portfolio": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "period_returns_spy": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "notes": [
+    "No allocation before 2026-01-31; period skipped.",
+    "No allocation before 2026-02-28; period skipped.",
+    "No allocation before 2026-03-31; period skipped.",
+    "No allocation before 2026-04-30; period skipped."
+  ]
+}

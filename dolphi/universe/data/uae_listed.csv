@@ -1,0 +1,29 @@
+symbol,name,asset_type,sector,industry,exchange,is_adr
+IHC.AE,International Holding Company,stock,Conglomerate,Diversified Holdings,ADX,false
+FAB.AE,First Abu Dhabi Bank,stock,Financial Services,Banks,ADX,false
+TAQA.AE,Abu Dhabi National Energy,stock,Utilities,Power & Water,ADX,false
+ADNOCGAS.AE,ADNOC Gas,stock,Energy,Natural Gas,ADX,false
+ADNOCDIST.AE,ADNOC Distribution,stock,Energy,Fuel Retail,ADX,false
+ADNOCDRILL.AE,ADNOC Drilling,stock,Energy,Oilfield Services,ADX,false
+ADNOCLS.AE,ADNOC Logistics & Services,stock,Industrials,Marine Logistics,ADX,false
+ADCB.AE,Abu Dhabi Commercial Bank,stock,Financial Services,Banks,ADX,false
+ADIB.AE,Abu Dhabi Islamic Bank,stock,Financial Services,Islamic Banking,ADX,false
+EAND.AE,e& (Etisalat),stock,Communication Services,Telecom,ADX,false
+ALDAR.AE,Aldar Properties,stock,Real Estate,Property Development,ADX,false
+ADPORTS.AE,AD Ports Group,stock,Industrials,Ports & Logistics,ADX,false
+BUROUGE.AE,Borouge,stock,Materials,Petrochemicals,ADX,false
+MULTIPLY.AE,Multiply Group,stock,Conglomerate,Diversified Holdings,ADX,false
+PUREHEALTH.AE,PureHealth Holding,stock,Healthcare,Hospital Operators,ADX,false
+BURJEEL.AE,Burjeel Holdings,stock,Healthcare,Hospital Operators,ADX,false
+AGTHIA.AE,Agthia Group,stock,Consumer Defensive,Food Producers,ADX,false
+EMAAR.AE,Emaar Properties,stock,Real Estate,Property Development,DFM,false
+EMAARDEV.AE,Emaar Development,stock,Real Estate,Property Development,DFM,false
+DEWA.AE,Dubai Electricity & Water Authority,stock,Utilities,Power & Water,DFM,false
+ENBD.AE,Emirates NBD,stock,Financial Services,Banks,DFM,false
+DIB.AE,Dubai Islamic Bank,stock,Financial Services,Islamic Banking,DFM,false
+DU.AE,Emirates Integrated Telecom (du),stock,Communication Services,Telecom,DFM,false
+SALIK.AE,Salik Company,stock,Industrials,Toll Roads,DFM,false
+PARKIN.AE,Parkin Company,stock,Industrials,Parking Operations,DFM,false
+TECOM.AE,TECOM Group,stock,Real Estate,Commercial Property,DFM,false
+TAALEEM.AE,Taaleem Holdings,stock,Consumer Cyclical,Education,DFM,false
+AIRARABIA.AE,Air Arabia,stock,Industrials,Airlines,DFM,false

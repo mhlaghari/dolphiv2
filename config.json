@@ -1,0 +1,18 @@
+{
+  "llm": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "models": {
+      "ollama": "llama3:8b",
+      "openai": "gpt-4o-mini",
+      "openrouter": "deepseek/deepseek-v4-flash",
+      "deepseek": "deepseek-v4-flash",
+      "anthropic": "claude-3-5-sonnet-latest"
+    }
+  },
+  "research": {
+    "depth": "deep",
+    "audiences": ["beginner", "professional"],
+    "goal": "discover broad market narratives before selecting tickers"
+  }
+}
