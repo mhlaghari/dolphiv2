@@ -114,3 +114,40 @@ def test_load_us_listed_overlay_enriches_sector_from_bundled(tmp_path, monkeypat
 
     assert by_symbol["AAPL"]["sector"] == "Technology"
     assert by_symbol["TSM"]["is_adr"] is True
+
+
+# ---------- UAE loader --------------------------------------------------------
+
+
+def test_load_uae_listed_returns_bundled_uae_symbols():
+    from dolphi.universe import load_uae_listed
+    rows = load_uae_listed()
+    assert len(rows) >= 20
+    by_symbol = {row["symbol"]: row for row in rows}
+    # UAE tickers use the .AE suffix (load-bearing — DON'T strip it).
+    assert "IHC.AE" in by_symbol
+    assert "EMAAR.AE" in by_symbol
+    assert "ADCB.AE" in by_symbol
+    # Exchange field distinguishes the two UAE markets.
+    exchanges = {row["exchange"] for row in rows}
+    assert "ADX" in exchanges
+    assert "DFM" in exchanges
+    # No symbol should be missing a sector — populated from the bundled CSV.
+    for row in rows:
+        assert row["sector"], f"{row['symbol']} has no sector"
+
+
+def test_open_universe_includes_uae_when_flag_is_set(monkeypatch):
+    from dolphi.universe.loader import open_universe
+    monkeypatch.setattr(
+        loader,
+        "_http_get",
+        lambda url, timeout=30: _FAKE_NASDAQ if "nasdaqlisted" in url else _FAKE_OTHER,
+    )
+    rows_us = open_universe(fetch=True, include_uae=False)
+    rows_with_uae = open_universe(fetch=True, include_uae=True)
+    us_symbols = {r["symbol"] for r in rows_us}
+    combined = {r["symbol"] for r in rows_with_uae}
+    assert "IHC.AE" not in us_symbols
+    assert "IHC.AE" in combined
+    assert len(combined) > len(us_symbols)

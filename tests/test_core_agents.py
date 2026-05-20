@@ -117,9 +117,12 @@ def test_portfolio_manager_ignores_extra_allocation_keys():
     ]
 
 
-def test_print_portfolio_uses_profile_for_risk_and_goal(monkeypatch):
-    lines = []
-    monkeypatch.setattr("click.echo", lambda value="": lines.append(str(value)))
+def test_print_portfolio_uses_profile_for_risk_and_goal(capsys):
+    """v0.2.0+ — output goes through Rich Console (stdout), not click.echo.
+
+    We just need to confirm the profile risk and goal appear somewhere in the
+    rendered output. Whitespace and formatting are an implementation detail.
+    """
     rec = {
         "allocations": [
             {"symbol": "NVDA", "allocation_pct": 60, "rationale": "AI leader"},
@@ -130,8 +133,10 @@ def test_print_portfolio_uses_profile_for_risk_and_goal(monkeypatch):
     profile = {"risk_tolerance": "Moderate", "goal": "growth"}
 
     _print_portfolio(rec, profile)
+    captured = capsys.readouterr().out
 
-    assert any("Risk: Moderate" in line and "Goal: growth" in line for line in lines)
+    assert "Moderate" in captured
+    assert "growth" in captured
 
 
 def test_portfolio_manager_notes_do_not_reference_unallocated_symbols():

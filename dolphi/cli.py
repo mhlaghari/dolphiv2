@@ -4,7 +4,14 @@ import logging
 from pathlib import Path
 
 import click
+from rich.box import ROUNDED
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
 
+from .banner import print_banner
+from .check import run_check
 from .config import Config
 from .data.base import DataFetcher
 from .data.cache import SQLiteCache
@@ -52,6 +59,22 @@ def _prompt_user(
     ))
 
 
+def _fragility_style(value: float) -> str:
+    if value >= 0.5:
+        return "bold red"
+    if value >= 0.25:
+        return "bold yellow"
+    return "bold green"
+
+
+def _delta_style(delta: float) -> str:
+    if delta >= 0.10:
+        return "bold green"
+    if delta <= -0.10:
+        return "bold red"
+    return "dim"
+
+
 def _print_portfolio(
     rec: dict,
     profile: dict,
@@ -60,82 +83,130 @@ def _print_portfolio(
 ) -> None:
     allocations = rec.get("allocations", [])
     notes = rec.get("notes", "")
+    console = Console()
 
-    click.echo()
-    click.echo("=== PORTFOLIO RECOMMENDATION ===")
-    click.echo()
-    click.echo(
-        f"Based on your profile (Risk: {profile.get('risk_tolerance', 'N/A')}, "
-        f"Goal: {profile.get('goal', 'N/A')}) "
-        f"and current market conditions:"
-    )
-
-    # Strategy summary: $-amount-to-invest + cash buffer kept outside the strategy.
     currency = str(profile.get("currency", "USD"))
     savings = float(profile.get("total_savings", 0) or 0)
     invest_pct = float(profile.get("investment_percentage", 100.0) or 100.0)
     invest_amount = savings * invest_pct / 100.0
     cash_buffer = savings - invest_amount
+
+    fragility_by_symbol = {
+        finding.get("symbol"): float(finding.get("overall_fragility", 0.0) or 0.0)
+        for finding in (pre_mortem_findings or [])
+    }
+
+    console.print()
+    header_text = Text.assemble(
+        ("portfolio recommendation", "bold bright_white"),
+        ("    risk=", "dim"), (profile.get("risk_tolerance", "?"), "bright_white"),
+        ("    goal=", "dim"), (profile.get("goal", "?"), "bright_white"),
+    )
+    console.print(Panel(header_text, border_style="bright_cyan", box=ROUNDED))
+
     if savings > 0:
-        click.echo()
-        click.echo(
-            f"Strategy: deploy {invest_pct:.0f}% ({invest_amount:,.0f} {currency}) "
-            f"of your {savings:,.0f} {currency}. "
-            f"Hold {cash_buffer:,.0f} {currency} as cash buffer outside the strategy."
+        strategy = Text.assemble(
+            ("deploy ", "dim"),
+            (f"{invest_pct:.0f}%", "bold bright_cyan"),
+            ("  (", "dim"),
+            (f"{invest_amount:,.0f} {currency}", "bold bright_white"),
+            (")  of your ", "dim"),
+            (f"{savings:,.0f} {currency}", "bright_white"),
+            ("\nhold ", "dim"),
+            (f"{cash_buffer:,.0f} {currency}", "bold yellow"),
+            (" as cash buffer outside the strategy", "dim"),
         )
-        click.echo("Below: how the deployed amount splits across positions.")
+        console.print(Panel(strategy, border_style="cyan", title="strategy", title_align="left"))
 
-    click.echo()
-    header = f"{'Asset':<16} {'Weight %':<10} {'Amount':<16} {'Rationale':<50}"
-    click.echo(header)
-    click.echo("-" * len(header))
-
+    # Allocation table.
+    table = Table(box=ROUNDED, expand=False, show_lines=False, title_style="bold bright_white")
+    table.add_column("symbol", style="bold bright_cyan", no_wrap=True)
+    table.add_column("weight", justify="right")
+    table.add_column("amount", justify="right", style="bright_white")
+    table.add_column("fragility", justify="right")
+    table.add_column("rationale", style="dim", overflow="fold")
     for a in allocations:
-        sym = a.get("symbol", "?")
-        pct = a.get("allocation_pct", 0)
+        sym = str(a.get("symbol", "?"))
+        pct = float(a.get("allocation_pct", 0) or 0)
         amount = invest_amount * pct / 100.0 if invest_amount > 0 else 0.0
-        rationale = a.get("rationale", "")
         amount_str = f"{amount:,.0f} {currency}" if invest_amount > 0 else "—"
-        click.echo(f"{sym:<16} {pct:<10.1f} {amount_str:<16} {rationale:<50}")
+        fragility = fragility_by_symbol.get(sym)
+        frag_cell = (
+            Text(f"{fragility:.2f}", style=_fragility_style(fragility))
+            if fragility is not None
+            else Text("—", style="dim")
+        )
+        rationale = str(a.get("rationale", ""))
+        # Trim *display* length; full text is preserved in the decision log.
+        if len(rationale) > 120:
+            rationale = rationale[:117] + "…"
+        table.add_row(sym, f"{pct:.1f}%", amount_str, frag_cell, rationale)
+    console.print(table)
 
     if debate_judgments:
-        click.echo()
-        click.echo("=== DEBATE VERDICTS (bull vs bear, per symbol) ===")
+        dj_table = Table(box=ROUNDED, title="debate verdicts (bull vs bear, per symbol)",
+                          title_style="bold magenta", expand=False)
+        dj_table.add_column("symbol", style="bold bright_cyan")
+        dj_table.add_column("winner")
+        dj_table.add_column("delta", justify="right")
+        dj_table.add_column("rationale", style="dim", overflow="fold")
         for item in debate_judgments:
-            delta = float(item.get("conviction_delta", 0))
+            winner = str(item.get("winner", "tie"))
+            winner_style = "green" if winner == "bull" else "red" if winner == "bear" else "dim"
+            delta = float(item.get("conviction_delta", 0) or 0)
             sign = "+" if delta > 0 else ""
-            click.echo(
-                f"  {item.get('symbol')}: winner={item.get('winner')} "
-                f"(delta {sign}{delta:.2f}) — {str(item.get('rationale', ''))[:200]}"
+            rationale = str(item.get("rationale", ""))[:200]
+            dj_table.add_row(
+                str(item.get("symbol", "?")),
+                Text(winner, style=winner_style),
+                Text(f"{sign}{delta:.2f}", style=_delta_style(delta)),
+                rationale,
             )
+        console.print(dj_table)
 
     if pre_mortem_findings:
-        click.echo()
-        click.echo("=== PRE-MORTEM: WHAT WOULD KILL THIS? ===")
+        console.print()
+        console.print(Text("pre-mortem: what would kill this?", style="bold bright_red"))
         for finding in pre_mortem_findings:
             falsifiers = finding.get("falsifiers", []) or []
             if not falsifiers:
                 continue
-            click.echo(
-                f"  {finding.get('symbol')} (fragility {finding.get('overall_fragility', 0):.2f}):"
+            fragility = float(finding.get("overall_fragility", 0) or 0)
+            header = Text.assemble(
+                ("  ", ""),
+                (str(finding.get("symbol", "?")), "bold bright_cyan"),
+                ("    fragility ", "dim"),
+                (f"{fragility:.2f}", _fragility_style(fragility)),
             )
+            console.print(header)
             for item in falsifiers[:3]:
                 horizon = item.get("horizon", "")
-                horizon_tag = f" [{horizon}]" if horizon else ""
-                click.echo(
-                    f"    - p={item.get('probability', 0):.2f}{horizon_tag} {item.get('failure_mode', '')}"
+                p = float(item.get("probability", 0) or 0)
+                line = Text.assemble(
+                    ("    p=", "dim"),
+                    (f"{p:.2f}", "bright_yellow"),
+                    (f" [{horizon}] " if horizon else " ", "dim"),
+                    (str(item.get("failure_mode", "")), "bright_white"),
                 )
-                breaks = item.get("breaks_assumption", "")
+                console.print(line)
+                breaks = str(item.get("breaks_assumption", ""))
                 if breaks:
-                    click.echo(f"        breaks: {breaks}")
-                indicator = item.get("leading_indicator", "")
+                    console.print(Text("        breaks: ", style="magenta") + Text(breaks, style="dim italic"))
+                indicator = str(item.get("leading_indicator", ""))
                 if indicator:
-                    click.echo(f"        watch:  {indicator}")
+                    console.print(Text("        watch:  ", style="cyan") + Text(indicator, style="bright_white"))
 
-    click.echo()
-    click.echo(f"Additional notes: {notes}")
-    click.echo()
-    click.echo("Disclaimer: Past performance does not guarantee future results.")
+    if notes:
+        console.print()
+        console.print(Panel(Text(notes, style="dim italic"), border_style="dim", title="notes", title_align="left"))
+
+    console.print()
+    console.print(Text("Past performance does not guarantee future results.", style="dim"))
+    console.print(
+        Text("\nNext Monday: ", style="dim")
+        + Text("dolphi --check", style="bold bright_cyan")
+        + Text(" to revisit the leading indicators above.", style="dim")
+    )
 
 
 def _run_backtest(
@@ -232,6 +303,8 @@ def _run_backtest(
 )
 @click.option("--new-profile", is_flag=True, help="Discard any saved profile and rebuild from scratch")
 @click.option("--edit-profile", is_flag=True, help="Walk through the saved profile field-by-field, press Enter to keep each")
+@click.option("--check", "check_falsifiers", is_flag=True, help="Revisit the leading indicators from the most recent decision and mark each safe / triggered / unsure")
+@click.option("--include-uae", is_flag=True, help="Include UAE-listed equities (DFM + ADX) in the universe alongside US listings")
 def main(
     provider: str | None,
     model: str,
@@ -250,8 +323,19 @@ def main(
     profile_path: str | None,
     new_profile: bool,
     edit_profile: bool,
+    check_falsifiers: bool,
+    include_uae: bool,
 ) -> None:
     _setup_logging(verbose)
+
+    if check_falsifiers:
+        from pathlib import Path
+        log_path = (
+            Path(profile_path).parent / "decision_log.jsonl"
+            if profile_path
+            else None
+        )
+        raise SystemExit(run_check(jsonl_path=log_path))
 
     if backtest:
         _run_backtest(
@@ -264,6 +348,7 @@ def main(
         )
         return
 
+    print_banner()
     click.echo()
     click.echo(_DISCLAIMER)
     click.echo()
@@ -340,14 +425,20 @@ def main(
 
     if mock_data:
         universe = default_universe()
+        if include_uae:
+            from .universe import load_uae_listed
+            universe = universe + load_uae_listed()
+            logger.info("Mock-data universe extended with %d UAE symbols (DFM + ADX)", len(load_uae_listed()))
         logger.info("Using curated demo universe (%d symbols) because --mock-data is set", len(universe))
     else:
         universe = open_universe(
             cache_dir=config.universe_cache_dir,
             max_age_hours=config.universe_max_age_hours,
             fetch=True,
+            include_uae=include_uae,
         )
-        logger.info("Loaded open universe with %d symbols", len(universe))
+        logger.info("Loaded open universe with %d symbols%s",
+                    len(universe), " (incl. UAE)" if include_uae else "")
 
     discovery = build_discovery_state(
         user_profile,
