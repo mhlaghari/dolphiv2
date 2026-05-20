@@ -216,7 +216,7 @@ testing.
 
 ---
 
-## Phase 2 — Proof (final milestone)
+## Phase 2 — Proof ✅ shipped (v0.2.0)
 
 **P2.1 — Walk-forward backtester** ✅ shipped (`dolphi/backtest/`).
 - Monthly (or configurable) rebalance marks from decision-log JSONL
@@ -233,12 +233,69 @@ testing.
 - `dolphi --tui` uses LangGraph `stream_mode="values"` + Rich Live to
   show discovered ideas, debate turns, pre-mortem findings, allocation,
   and prior-outcome reflection as the workflow progresses.
-- 60-second GIF for README still TODO (manual recording).
+- 60-second GIF for README still TODO (manual recording) — defers to
+  P3.1 below.
 
 **P2.3 — Writeup** ✅ draft (`docs/technical-note.md`).
 
-**Done when:** README has equity-curve chart ✅, TUI available ✅, writeup ✅;
-60-second GIF still optional.
+**P2.4 — Retention + colour + multi-region** ✅ shipped.
+- `dolphi --check` — weekly indicator-review loop (`dolphi/check.py`).
+  Loads the latest decision, walks every leading indicator, prompts
+  `safe / triggered / unsure`, then suggests position-size adjustments
+  (−30 % per triggered, −10 % per unsure, capped at −90 %).
+- DOLPHI ASCII banner (`dolphi/banner.py`) + Rich-coloured
+  `_print_portfolio` with fragility-graded weight column and
+  conviction-delta cells.
+- UAE markets via `--include-uae` (`dolphi/universe/data/uae_listed.csv`,
+  28 DFM + ADX names).
+- Persisted investor profile (`dolphi/profile_store.py`) with hotkey
+  prompts, tolerant money parser, `[Y]es / [E]dit / [N]ew` flow,
+  `investment_percentage` field.
+- Falsifier-quality eval harness (`dolphi/eval/`) with `python -m dolphi.eval`
+  CLI, 8 curated bull-case fixtures, four-axis LLM-as-judge scoring,
+  markdown / CSV / JSON reports.
+
+**Done when:** README has equity-curve chart ✅, TUI available ✅, writeup ✅,
+public release tagged ✅ (v0.2.0). 60-second GIF deferred to Phase 3.
+
+---
+
+## Phase 3 — Reach (next milestone, not yet started)
+
+The story of v0.2.0 is *"the agent makes you smarter every week"*. The
+story of Phase 3 needs to be *"the agent travels with you"* — shareable,
+visible, recordable. Three lanes, ordered by virality leverage.
+
+**P3.1 — Bloomberg-style TUI rebuild** (`dolphi/tui/`).
+- Replace the current 5-pane stack with a `rich.layout.Layout` dashboard:
+  header + sidebar (agent-progress timeline) + main pane + footer
+  (hotkey hints).
+- Hotkey drill-down on per-symbol falsifiers (`[1-5]` keys jump to a
+  symbol's full 3-falsifier rolldown).
+- Conviction-delta gauges in the debate pane; fragility heatmap in the
+  pre-mortem pane (green/yellow/red).
+- `--profile-preset` + `--tui-record` flags so the demo recording is
+  deterministic (asciinema → agg → ≤ 2 MB GIF embedded in README).
+- See `docs/tui/baseline_observations.md` for the full numbered work list.
+
+**P3.2 — `dolphi card`** (new `dolphi/card.py`, optional Pillow dep).
+- Render any decision (the latest, or one selected by date) as a
+  1080×1080 shareable PNG: top symbol, fragility score, the 3 named
+  falsifiers with their weekly indicators.
+- Designed for Twitter/Threads/LinkedIn. The artifact itself is the
+  marketing.
+- CLI: `dolphi card [--decision DATE] --out card.png`.
+
+**P3.3 — `dolphi history`** (new `dolphi/history.py`).
+- Personal alpha-vs-SPY dashboard from the existing reflection JSONL.
+- Falsifier hit rate over time ("3 of your 12 falsifiers actually fired;
+  you sized down before 2 of them").
+- Optional `--export-svg path/` for the README.
+- This is the part investment bankers actually want to see — a
+  verifiable personal track record with named falsifiers per decision.
+
+**Done when:** the TUI GIF is in the README, the eval leaderboard is
+populated with a full 7-model run, and at least P3.2 OR P3.3 has shipped.
 
 ---
 

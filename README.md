@@ -1,10 +1,11 @@
 # 🐬 Dolphi
 
-[![CI](https://github.com/mhlaghari/dolphi/actions/workflows/ci.yml/badge.svg)](https://github.com/mhlaghari/dolphi/actions/workflows/ci.yml)
+[![CI](https://github.com/mhlaghari/dolphiv2/actions/workflows/ci.yml/badge.svg)](https://github.com/mhlaghari/dolphiv2/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-122%20passing-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/tests-184%20passing-brightgreen)](tests/)
 [![Ruff](https://img.shields.io/badge/ruff-clean-success)](pyproject.toml)
+[![Release](https://img.shields.io/badge/release-v0.2.0-blue)](https://github.com/mhlaghari/dolphiv2/releases/tag/v0.2.0)
 
 > The multi-agent investment researcher that **proves itself wrong before it recommends anything**.
 
@@ -17,6 +18,19 @@ pair of questions:
 2. **Where is this thesis weakest?** (a dedicated *Pre-Mortem Agent* whose only job is to break it)
 
 For research and education only. Not financial, investment, or trading advice.
+
+---
+
+## ✨ What's new in v0.2.0
+
+- 🔍 **`dolphi --check`** — the retention loop. Loads the most recent decision, walks every leading indicator the pre-mortem named, prompts `[S]till safe / [T]riggered / [U]nsure` per falsifier, then suggests position-size adjustments per symbol. Built for Monday-morning research check-ins.
+- 🎨 **Colourful CLI** — DOLPHI ASCII banner at every entry point; Rich-styled portfolio table with fragility-graded weight column (green/yellow/red) and bull/bear conviction-delta cells. `dolphi --mock-data --seed-symbol NVDA`.
+- 🇦🇪 **UAE markets** — 28 of the largest DFM + ADX listings (IHC, FAB, TAQA, ADNOC Gas/Dist, EMAAR, DEWA, ENBD, …) ranked alongside US names. `dolphi --include-uae`.
+- 🏆 **Falsifier-quality eval** — `python -m dolphi.eval` benchmarks LLMs on how good their pre-mortem falsifiers are (horizon observability + assumption coherence + indicator specificity + probability calibration), emitting markdown / CSV / JSON leaderboards.
+- 💾 **Saved investor profile** at `~/.dolphi/profile.json` with hotkey prompts (`[U]SD / [E]UR / [G]BP / [A]ED / …`) and a `[Y]es / [E]dit / [N]ew` flow on every run.
+- 💰 **`investment_percentage` field** — choose what fraction of savings to deploy; the rest stays as cash buffer outside the strategy and shows up as a separate line.
+
+Full release notes: [v0.2.0](https://github.com/mhlaghari/dolphiv2/releases/tag/v0.2.0).
 
 ---
 
@@ -42,7 +56,7 @@ For research and education only. Not financial, investment, or trading advice.
   SPY, and feeds it into the portfolio manager prompt so the agent
   must address its own track record before issuing new calls.
 
-All four ship today on `main`. `pytest` shows **122 passing tests** and
+All four ship today on `main`. `pytest` shows **184 passing tests** and
 the codebase is `ruff` clean.
 
 ---
@@ -99,6 +113,38 @@ dolphi --backtest --backtest-output docs/benchmarks
 
 The backtest is a **sanity check**, not the product pitch. Dolphi's claim
 is more honest research via falsification — not guaranteed alpha.
+
+---
+
+## 🔍 Weekly check (the retention loop)
+
+Every falsifier the pre-mortem agent writes is bound by contract to name a
+**weekly-checkable leading indicator** — a concrete measurable quantity a
+researcher could look at next Monday and tell whether the thesis is still
+intact. `dolphi --check` is the obvious next step:
+
+```bash
+dolphi --check
+```
+
+It loads the most recent decision from `~/.dolphi/decision_log.jsonl`,
+walks through every indicator (typically 15 — five symbols × three
+falsifiers each), and prompts:
+
+```
+Status? [S]till safe  [T]riggered  [U]nsure
+```
+
+When the loop finishes, Dolphi tabulates a **position-size suggestion**:
+each triggered falsifier shaves 30 % off that symbol's weight, each
+unsure shaves 10 %, capped at a 90 % reduction. Nothing is rebalanced
+automatically — the suggestion is intentionally something the user has
+to act on, because the point is to make the falsification step
+*recurring*, not one-shot.
+
+This is what turns Dolphi from "use once, say so what?" into "open every
+Monday." The data model already had every leading indicator persisted —
+`dolphi --check` just surfaces them.
 
 ---
 
@@ -169,8 +215,15 @@ flowchart TD
 # Install (editable, with dev deps)
 pip install -e ".[dev]"
 
-# Offline mock-data demo (no API keys, no network)
-dolphi --mock-data --seed-symbol NVDA --top-k 5
+# First run — builds your investor profile (saved to ~/.dolphi/profile.json),
+# then runs the full agent graph end-to-end. Offline; no API keys required.
+dolphi --new-profile --mock-data --seed-symbol NVDA --top-k 5
+
+# Next Monday — revisit every falsifier from the most recent decision
+dolphi --check
+
+# Rank UAE-listed names (DFM + ADX) alongside US listings
+dolphi --include-uae --mock-data
 
 # Walk-forward backtest vs SPY (offline demo with bundled decisions)
 dolphi --backtest --mock-data --backtest-start 2024-01-31 --backtest-end 2024-12-31
@@ -178,7 +231,7 @@ dolphi --backtest --mock-data --backtest-start 2024-01-31 --backtest-end 2024-12
 # Backtest your own decision log against live prices
 dolphi --backtest
 
-# Live discovery with default broad market research agenda
+# Live discovery with the default broad-market research agenda
 dolphi
 
 # Verbose, with per-agent reasoning
@@ -248,10 +301,39 @@ dolphi/
 └── universe/          loader · validator · ADR/ETF schema · NASDAQ/NYSE feed
 docs/benchmarks/       generated equity curve + metrics (from `dolphi --backtest`)
 PLAN.md                roadmap & shipped-by-phase decisions
-tests/                 unit tests (122, run with `pytest`)
+tests/                 unit tests (184, run with `pytest`)
 ```
 
 See `PLAN.md` for the full roadmap.
+
+---
+
+## 🇦🇪 UAE markets
+
+Pass `--include-uae` and Dolphi extends the universe with 28 of the
+largest DFM (Dubai Financial Market) and ADX (Abu Dhabi Securities
+Exchange) listings — IHC, FAB, TAQA, ADNOC Gas / Distribution / Drilling /
+Logistics, ADCB, ADIB, e&, Aldar, AD Ports, Borouge, Multiply,
+PureHealth, Burjeel, Agthia on ADX; EMAAR, Emaar Development, DEWA,
+Emirates NBD, DIB, du, Salik, Parkin, TECOM, Taaleem, Air Arabia on DFM.
+
+```bash
+dolphi --include-uae --mock-data --top-k 5
+```
+
+UAE tickers carry the `.AE` suffix on yfinance (e.g. `IHC.AE`,
+`EMAAR.AE`) — that suffix is load-bearing and is preserved by the UAE
+loader. If a symbol can't be priced by yfinance it's silently dropped
+downstream; the universe load itself never fails.
+
+If your saved investor profile has `currency: AED`, you probably want
+to keep `--include-uae` on by default — set an alias for it in your
+shell:
+
+```bash
+alias dolphi='dolphi --include-uae'   # bash / zsh
+function dolphi { command dolphi --include-uae @args }   # PowerShell
+```
 
 ---
 
