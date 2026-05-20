@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from .anthropic_client import AnthropicClient
 from .json_mixin import JsonGeneratingClient
 from .ollama_client import OllamaClient
 from .openai_compatible import OpenAICompatibleClient
@@ -22,6 +23,13 @@ def create_llm_client(config: Any) -> JsonGeneratingClient:
 
     if provider == "ollama":
         return OllamaClient(endpoint=config.ollama_endpoint, model=model)
+
+    if provider == "anthropic":
+        api_key = getattr(config, "anthropic_api_key", None)
+        if not api_key:
+            logger.error("anthropic requires ANTHROPIC_API_KEY in .env")
+            raise SystemExit(1)
+        return AnthropicClient(api_key=api_key, model=model)
 
     if provider in _OPENAI_COMPATIBLE:
         base_url, key_attr = _OPENAI_COMPATIBLE[provider]
