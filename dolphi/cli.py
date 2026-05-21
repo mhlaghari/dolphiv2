@@ -235,7 +235,6 @@ def _run_backtest(
             skip_cache=skip_cache,
             mock=False,
             newsapi_key=config.newsapi_key,
-            alpha_vantage_key=config.alpha_vantage_key,
         )
         use_demo = False
         jsonl_path = config.decision_log_path.with_suffix(".jsonl")
@@ -363,8 +362,6 @@ def main(
     config.skip_cache = skip_cache
     config.mock_data = mock_data
 
-    if not config.alpha_vantage_key:
-        logger.info("ALPHA_VANTAGE_KEY not set — skipping Alpha Vantage (using yfinance)")
     if not config.newsapi_key:
         logger.info("NEWSAPI_KEY not set — skipping NewsAPI (no news sentiment)")
     if not config.brave_api_key:
@@ -378,7 +375,6 @@ def main(
         skip_cache=skip_cache,
         mock=mock_data,
         newsapi_key=config.newsapi_key,
-        alpha_vantage_key=config.alpha_vantage_key,
     )
 
     user_profile = _prompt_user(
