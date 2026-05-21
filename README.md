@@ -295,6 +295,35 @@ log, and the optional Chroma memory store.
 
 ---
 
+## Use from Claude Desktop or Cursor
+
+Dolphi ships a local MCP server so Claude Desktop, Cursor, and any other
+MCP-compatible agent can drive the full research pipeline as a tool:
+
+```bash
+pip install "dolphi[mcp]"
+```
+
+Then add it to `~/Library/Application Support/Claude/claude_desktop_config.json`
+(macOS) — Windows / Cursor paths are in [`docs/mcp.md`](docs/mcp.md):
+
+```json
+{
+  "mcpServers": {
+    "dolphi": {
+      "command": "dolphi-mcp"
+    }
+  }
+}
+```
+
+Restart the client. Four tools light up: `dolphi_evaluate`,
+`dolphi_check_falsifiers`, `dolphi_list_falsifiers`,
+`dolphi_get_decision_log`. See [`docs/mcp.md`](docs/mcp.md) for the full
+guide.
+
+---
+
 ## Configuration
 
 `config.json` chooses the active LLM provider/model and research depth:
