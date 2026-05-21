@@ -3,9 +3,9 @@
 [![CI](https://github.com/mhlaghari/dolphiv2/actions/workflows/ci.yml/badge.svg)](https://github.com/mhlaghari/dolphiv2/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](pyproject.toml)
-[![Tests](https://img.shields.io/badge/tests-184%20passing-brightgreen)](tests/)
+[![Tests](https://img.shields.io/badge/tests-205%20passing-brightgreen)](tests/)
 [![Ruff](https://img.shields.io/badge/ruff-clean-success)](pyproject.toml)
-[![Release](https://img.shields.io/badge/release-v0.2.0-blue)](https://github.com/mhlaghari/dolphiv2/releases/tag/v0.2.0)
+[![Release](https://img.shields.io/badge/release-v0.3.0-blue)](https://github.com/mhlaghari/dolphiv2/releases/tag/v0.3.0)
 
 > **A thesis-interrogation primitive for investment research.** Python library + MCP server + CLI that proves a bull case wrong before recommending anything.
 
@@ -92,7 +92,7 @@ Full release notes: [v0.2.0](https://github.com/mhlaghari/dolphiv2/releases/tag/
   SPY, and feeds it into the portfolio manager prompt so the agent
   must address its own track record before issuing new calls.
 
-All four ship today on `main`. `pytest` shows **184 passing tests** and
+All four ship today on `main`. `pytest` shows **205 passing tests** and
 the codebase is `ruff` clean.
 
 ---
