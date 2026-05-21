@@ -242,6 +242,8 @@ flowchart TD
 bash examples/quickstart.sh
 ```
 
+See [`examples/01_evaluate_a_ticker.ipynb`](examples/01_evaluate_a_ticker.ipynb) — a runnable cookbook that walks through the full Dolphi pipeline (bull/bear debate, falsifiers, fragility, allocation, falsifier-check loop) end-to-end in mock mode.
+
 ```bash
 # Install (editable, with dev deps)
 pip install -e ".[dev]"
