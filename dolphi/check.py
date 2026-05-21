@@ -104,6 +104,49 @@ class CheckResult:
         return out
 
 
+def compute_adjustments(
+    decision: dict,
+    feedback: dict[str, Status],
+) -> tuple[dict[str, float], list[dict]]:
+    """Pure-function core shared by the CLI ``run_check`` flow and the API.
+
+    Given a decision record (as stored in ``decision_log.jsonl``) and a
+    ``feedback`` mapping of ``"{symbol}-{index}"`` → status, returns:
+
+    - ``position_adjustments``: ``{symbol: delta}`` where ``delta`` is the
+      fractional change to apply (e.g., ``-0.30`` means cut the position by
+      30%). Symbols with no triggered/unsure feedback are omitted.
+    - ``triggered_falsifiers``: list of the falsifier dicts that were
+      marked ``"triggered"``, each annotated with ``symbol`` and ``index``.
+
+    The discount math matches ``CheckResult.adjustment_by_symbol``:
+    ``-_TRIGGER_DISCOUNT`` per triggered, ``-_UNSURE_DISCOUNT`` per unsure,
+    capped at -0.90 (i.e., multiplier floor of 0.10).
+    """
+    per_symbol_counts: dict[str, dict[str, int]] = {}
+    triggered: list[dict] = []
+    for finding in decision.get("pre_mortem_findings", []) or []:
+        symbol = str(finding.get("symbol", ""))
+        if not symbol:
+            continue
+        for idx, falsifier in enumerate(finding.get("falsifiers", []) or []):
+            key = f"{symbol}-{idx}"
+            status = feedback.get(key)
+            if status not in ("triggered", "unsure"):
+                continue
+            counts = per_symbol_counts.setdefault(symbol, {"triggered": 0, "unsure": 0})
+            counts[status] += 1
+            if status == "triggered":
+                triggered.append({**dict(falsifier), "symbol": symbol, "index": idx})
+
+    adjustments: dict[str, float] = {}
+    for symbol, counts in per_symbol_counts.items():
+        raw_discount = _TRIGGER_DISCOUNT * counts["triggered"] + _UNSURE_DISCOUNT * counts["unsure"]
+        delta = -min(0.90, raw_discount)
+        adjustments[symbol] = round(delta, 6)
+    return adjustments, triggered
+
+
 # ---------- decision log loading ----------------------------------------------
 
 
