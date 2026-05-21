@@ -170,12 +170,14 @@ on a monthly cadence and compounds hold-period returns.
 rebalance decisions. Not a live track record.*
 
 ```bash
-# Offline demo → writes docs/benchmarks/equity_curve.svg + metrics JSON
-dolphi --backtest --mock-data
+# Offline demo against the bundled 2024 fixture (writes equity_curve.svg + metrics JSON)
+dolphi --backtest --mock-data --backtest-start 2024-01-31 --backtest-end 2024-12-31
 
 # Your ~/.dolphi/decision_log.jsonl vs live yfinance prices
 dolphi --backtest --backtest-output docs/benchmarks
 ```
+
+> The demo fixture's prices are synthetic and designed to be friendly to the bundled decisions, so the headline alpha is a sanity-check on the *plumbing*, not a forecast of live results. For a real track record, run the bottom command after a few weeks of `dolphi --check`.
 
 The backtest is a **sanity check**, not the product pitch. Dolphi's claim
 is more honest research via falsification — not guaranteed alpha.
