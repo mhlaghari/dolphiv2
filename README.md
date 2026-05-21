@@ -33,8 +33,6 @@ for symbol, falsifiers in result.falsifiers.items():
         print(f"  - {f.failure_mode} (watch: {f.leading_indicator})")
 ```
 
-> The `dolphi.api` facade and `dolphi-mcp` server ship in v0.3 (in progress).
-
 ---
 
 ## Why this exists
@@ -57,14 +55,26 @@ its weight.
 
 ---
 
-## ✨ What's new in v0.2.0
+## ✨ What's new in v0.3.0
+
+- 📚 **`dolphi.api` library facade** — `from dolphi import evaluate, check_falsifiers, list_falsifiers, get_decision_log`. Pydantic v2 models, sync API, `mock=True` runs offline. Other trading agents can now call Dolphi directly as a library.
+- 🔌 **`dolphi-mcp` MCP server** — `pip install "dolphi[mcp]"` exposes four tools to Claude Desktop, Cursor, or any MCP client. Full wiring guide at [`docs/mcp.md`](docs/mcp.md).
+- 🏆 **First real leaderboard published** — [`docs/eval/falsifier_quality.md`](docs/eval/falsifier_quality.md). Surprising headline: `deepseek-v4-flash` beats `deepseek-v4-pro` on aggregate (0.838 vs 0.787), and is ~3× faster. Cheap model writes sharper falsifiers per the four-axis rubric. Audit JSON includes a `manifest` block (judge prompt SHA, git commit, exact command) so anyone can re-run.
+- 📓 **Cookbook notebook** — [`examples/01_evaluate_a_ticker.ipynb`](examples/01_evaluate_a_ticker.ipynb) runs the full pipeline offline in ~2 seconds.
+- ⚡ **One-command demo** — `bash examples/quickstart.sh` installs and runs Dolphi end-to-end in mock mode.
+- 🔒 **OSS hygiene** — `SECURITY.md` (disclosure policy + SLA), `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1).
+- ⚠️ **alpha_vantage deprecated** — moved to `dolphi/experimental/`; yfinance is now the sole data source. Scheduled removal in v0.4.
+
+Full release notes: [v0.3.0](https://github.com/mhlaghari/dolphiv2/releases/tag/v0.3.0).
+
+## ✨ Previously in v0.2.0
 
 - 🔍 **`dolphi --check`** — the retention loop. Loads the most recent decision, walks every leading indicator the pre-mortem named, prompts `[S]till safe / [T]riggered / [U]nsure` per falsifier, then suggests position-size adjustments per symbol. Built for Monday-morning research check-ins.
 - 🎨 **Colourful CLI** — DOLPHI ASCII banner at every entry point; Rich-styled portfolio table with fragility-graded weight column (green/yellow/red) and bull/bear conviction-delta cells. `dolphi --mock-data --seed-symbol NVDA`.
 - 🇦🇪 **UAE markets** — 28 of the largest DFM + ADX listings (IHC, FAB, TAQA, ADNOC Gas/Dist, EMAAR, DEWA, ENBD, …) ranked alongside US names. `dolphi --include-uae`.
-- 🏆 **Falsifier-quality eval** — `python -m dolphi.eval` benchmarks LLMs on how good their pre-mortem falsifiers are (horizon observability + assumption coherence + indicator specificity + probability calibration), emitting markdown / CSV / JSON leaderboards.
-- 💾 **Saved investor profile** at `~/.dolphi/profile.json` with hotkey prompts (`[U]SD / [E]UR / [G]BP / [A]ED / …`) and a `[Y]es / [E]dit / [N]ew` flow on every run.
-- 💰 **`investment_percentage` field** — choose what fraction of savings to deploy; the rest stays as cash buffer outside the strategy and shows up as a separate line.
+- 🏆 **Falsifier-quality eval harness** — `python -m dolphi.eval` benchmarks LLMs on horizon observability, assumption coherence, indicator specificity, and probability calibration; emits markdown / CSV / JSON leaderboards.
+- 💾 **Saved investor profile** at `~/.dolphi/profile.json` with hotkey prompts and a `[Y]es / [E]dit / [N]ew` flow.
+- 💰 **`investment_percentage` field** — choose what fraction of savings to deploy; the rest stays as cash buffer outside the strategy.
 
 Full release notes: [v0.2.0](https://github.com/mhlaghari/dolphiv2/releases/tag/v0.2.0).
 
@@ -99,13 +109,21 @@ the codebase is `ruff` clean.
 
 ## Model leaderboard — who writes the sharpest falsifiers?
 
-The Pre-Mortem agent is only as good as the model behind it. `docs/eval/falsifier_quality.md`
+The Pre-Mortem agent is only as good as the model behind it. [`docs/eval/falsifier_quality.md`](docs/eval/falsifier_quality.md)
 benchmarks LLMs on eight curated bull-case fixtures across AI capex, semiconductor
 pricing, energy transition, GLP-1, defence, China/ADR risk, regional banking, and
-rate-sensitive REITs. The current leaderboard ships with DeepSeek v4-pro and v4-flash
-benchmarked; Anthropic, Ollama, and OpenAI providers are supported and can be added by
-passing more `--models` flags. Each falsifier is graded on four axes by a fixed
-judge model:
+rate-sensitive REITs.
+
+**Current leaderboard** (`deepseek-v4-pro` as judge, repeats=1):
+
+| Rank | Model | Aggregate | Horizon | Assumption | Indicator | Probability |
+|---:|---|---:|---:|---:|---:|---:|
+| 1 | `deepseek:deepseek-v4-flash` | **0.838** | 0.948 | 0.676 | 0.857 | 0.871 |
+| 2 | `deepseek:deepseek-v4-pro`   | **0.787** | 0.869 | 0.779 | 0.783 | 0.719 |
+
+The headline: **flash beats pro on aggregate** and is ~3× faster (172 s vs 510 s of judge latency). Pro is sharper on assumption coherence; flash wins everywhere else. Anthropic, Ollama, and OpenAI providers are supported and can be added by passing more `--models` flags.
+
+Each falsifier is graded on four axes by a fixed judge model:
 
 - **horizon observability** — is the predicted event verifiable inside ≤12 months?
 - **assumption coherence** — does the falsifier actually break the assumption it names?
@@ -115,19 +133,28 @@ judge model:
 The leaderboard, raw per-falsifier rows, and full prompt audit trail (for
 reproducibility) land in `docs/eval/` once a run is recorded. Reproduce locally:
 
+Reproduce the current leaderboard exactly:
+
 ```bash
 python -m dolphi.eval \
-    --models anthropic:claude-sonnet-4-6,deepseek:v4-pro,ollama:llama3:8b \
+    --models deepseek:deepseek-v4-flash,deepseek:deepseek-v4-pro \
+    --fixtures all \
+    --judge deepseek:deepseek-v4-pro \
+    --repeats 1 \
+    --out docs/eval/
+```
+
+Or run it against your own provider mix — Anthropic, OpenAI, OpenRouter, or local Ollama all work:
+
+```bash
+python -m dolphi.eval \
+    --models anthropic:claude-sonnet-4-6,deepseek:deepseek-v4-pro,ollama:llama3:8b \
     --fixtures all \
     --judge anthropic:claude-sonnet-4-6 \
     --out docs/eval/
 ```
 
-> *Eval harness is being added in v0.2.0 (in progress). The methodology, fixtures,
-> judge rubric, and report format are versioned in this repository so the published
-> leaderboard remains independently re-runnable.*
-
-**Latest run:** [`docs/eval/falsifier_quality.md`](docs/eval/falsifier_quality.md) — DeepSeek v4-pro / v4-flash on all 8 fixtures, DeepSeek v4-pro as judge. See the audit trail in `docs/eval/falsifier_quality.json` (includes `manifest` block with judge prompt SHA, git commit, and the exact command).
+The audit trail in [`docs/eval/falsifier_quality.json`](docs/eval/falsifier_quality.json) includes a `manifest` block (judge prompt SHA, git commit, dolphi version, exact command) so the leaderboard is independently re-runnable.
 
 ---
 
@@ -364,7 +391,7 @@ dolphi/
 └── universe/          loader · validator · ADR/ETF schema · NASDAQ/NYSE feed
 docs/benchmarks/       generated equity curve + metrics (from `dolphi --backtest`)
 PLAN.md                roadmap & shipped-by-phase decisions
-tests/                 unit tests (184, run with `pytest`)
+tests/                 unit tests (205, run with `pytest`)
 ```
 
 See `PLAN.md` for the full roadmap.
