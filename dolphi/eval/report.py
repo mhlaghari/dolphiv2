@@ -3,11 +3,17 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
+import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import dolphi
+
 from .harness import EvalReport
+from .judge import _JUDGE_SYSTEM_PROMPT
 
 
 def write_reports(report: EvalReport, output_dir: Path | str) -> dict[str, Path]:
@@ -104,9 +110,33 @@ def _write_csv(report: EvalReport, path: Path) -> None:
                 ])
 
 
+def _git_commit() -> str:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            capture_output=True, text=True, timeout=5,
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip()
+    except (subprocess.SubprocessError, FileNotFoundError, OSError):
+        pass
+    return "unknown"
+
+
+def _build_manifest() -> dict:
+    prompt_sha = hashlib.sha256(_JUDGE_SYSTEM_PROMPT.encode()).hexdigest()[:12]
+    return {
+        "judge_prompt_sha256": prompt_sha,
+        "git_commit": _git_commit(),
+        "dolphi_version": dolphi.__version__,
+        "command": "python " + " ".join(sys.argv) if sys.argv else "python",
+    }
+
+
 def _as_audit_dict(report: EvalReport) -> dict:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "manifest": _build_manifest(),
         "judge_label": report.judge_label,
         "fixture_slugs": report.fixture_slugs,
         "repeats": report.repeats,
