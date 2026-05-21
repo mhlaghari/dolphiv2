@@ -100,10 +100,11 @@ the codebase is `ruff` clean.
 ## Model leaderboard — who writes the sharpest falsifiers?
 
 The Pre-Mortem agent is only as good as the model behind it. `docs/eval/falsifier_quality.md`
-benchmarks seven LLMs (Anthropic Opus 4.7 / Sonnet 4.6 / Haiku 4.5, DeepSeek V4-Pro /
-V4-Flash, Ollama Llama 3 / Qwen 2.5) on eight curated bull-case fixtures across AI capex,
-semiconductor pricing, energy transition, GLP-1, defence, China/ADR risk, regional
-banking, and rate-sensitive REITs. Each falsifier is graded on four axes by a fixed
+benchmarks LLMs on eight curated bull-case fixtures across AI capex, semiconductor
+pricing, energy transition, GLP-1, defence, China/ADR risk, regional banking, and
+rate-sensitive REITs. The current leaderboard ships with DeepSeek v4-pro and v4-flash
+benchmarked; Anthropic, Ollama, and OpenAI providers are supported and can be added by
+passing more `--models` flags. Each falsifier is graded on four axes by a fixed
 judge model:
 
 - **horizon observability** — is the predicted event verifiable inside ≤12 months?
@@ -126,7 +127,7 @@ python -m dolphi.eval \
 > judge rubric, and report format are versioned in this repository so the published
 > leaderboard remains independently re-runnable.*
 
-<!-- TODO: when T-EVAL runs, this section will link to docs/eval/falsifier_quality.md -->
+**Latest run:** [`docs/eval/falsifier_quality.md`](docs/eval/falsifier_quality.md) — DeepSeek v4-pro / v4-flash on all 8 fixtures, DeepSeek v4-pro as judge. See the audit trail in `docs/eval/falsifier_quality.json` (includes `manifest` block with judge prompt SHA, git commit, and the exact command).
 
 ---
 

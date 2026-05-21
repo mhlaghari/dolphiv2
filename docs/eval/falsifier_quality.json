@@ -1,0 +1,985 @@
+{
+  "generated_at": "2026-05-21T08:13:36+00:00",
+  "manifest": {
+    "judge_prompt_sha256": "120750965837",
+    "git_commit": "dafdb850b8cc22476c78ac16879b7e73155ab462",
+    "dolphi_version": "0.1.0",
+    "command": "python /Users/mhlaghari/Documents/Documents/MyProjects/dolphiv2/dolphi/eval/__main__.py --models deepseek:deepseek-v4-pro,deepseek:deepseek-v4-flash --fixtures all --judge deepseek:deepseek-v4-pro --repeats 1 --out docs/eval/ --verbose"
+  },
+  "judge_label": "deepseek:deepseek-v4-pro",
+  "fixture_slugs": [
+    "ai-capex",
+    "china-adr-overhang",
+    "defence-procurement",
+    "energy-transition",
+    "glp-1",
+    "regional-banking",
+    "reit-rate-sensitivity",
+    "semi-pricing-power"
+  ],
+  "repeats": 1,
+  "leaderboard": [
+    {
+      "model": "deepseek:deepseek-v4-flash",
+      "mean_aggregate": 0.838,
+      "horizon_observability": 0.948,
+      "assumption_coherence": 0.676,
+      "indicator_specificity": 0.857,
+      "probability_calibration": 0.871,
+      "n_falsifiers": 21,
+      "fixtures_run": 8,
+      "total_latency_seconds": 172.32,
+      "errors": 1
+    },
+    {
+      "model": "deepseek:deepseek-v4-pro",
+      "mean_aggregate": 0.787,
+      "horizon_observability": 0.869,
+      "assumption_coherence": 0.779,
+      "indicator_specificity": 0.783,
+      "probability_calibration": 0.719,
+      "n_falsifiers": 24,
+      "fixtures_run": 8,
+      "total_latency_seconds": 509.88,
+      "errors": 0
+    }
+  ],
+  "per_model": [
+    {
+      "model": "deepseek:deepseek-v4-pro",
+      "fixtures_run": [
+        "ai-capex",
+        "china-adr-overhang",
+        "defence-procurement",
+        "energy-transition",
+        "glp-1",
+        "regional-banking",
+        "reit-rate-sensitivity",
+        "semi-pricing-power"
+      ],
+      "total_latency_seconds": 509.878,
+      "errors": [],
+      "scored_falsifiers": [
+        {
+          "fixture_slug": "ai-capex",
+          "falsifier": {
+            "failure_mode": "A major hyperscaler (e.g., Microsoft, Amazon, Meta) misses its 20% YoY AI capex growth target in a quarterly report, signaling that scaling constraints or efficiency gains are reducing infrastructure buildout urgency.",
+            "probability": 0.3,
+            "leading_indicator": "Weekly check of cloud provider capex guidance updates via earnings call transcripts and press releases; monitor for any downward revision or capex growth forecast below 20%.",
+            "breaks_assumption": "Hyperscaler AI capex grows at least 20% YoY each year through 2027.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "Hyperscaler AI capex grows at least 20% YoY each year through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.4,
+            "indicator_specificity": 0.7,
+            "probability_calibration": 0.9,
+            "aggregate": 0.75,
+            "comment": "Falsifier is clearly verifiable within 12 months but the one-company miss does not reliably break the aggregate growth assumption; the indicator's weekly frequency is optimistic given quarterly earnings cycles."
+          },
+          "latency_seconds": 19.074
+        },
+        {
+          "fixture_slug": "ai-capex",
+          "falsifier": {
+            "failure_mode": "A top non-Google cloud provider (e.g., Amazon or Microsoft) announces a major inference or training deployment using AMD MI300X or proprietary ASICs, indicating NVDA's accelerator share slips below 75%.",
+            "probability": 0.25,
+            "leading_indicator": "Weekly monitoring of AMD's press releases, hyperscaler quarterly earnings calls for new accelerator partnerships, and technical benchmarks from MLPerf; sudden adoption announcements or benchmarks favoring alternatives.",
+            "breaks_assumption": "NVDA accelerator share stays above 75% as competitors (AMD, Intel, in-house silicon) fail to close the software/ecosystem gap.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "NVDA accelerator share stays above 75% as competitors (AMD, Intel, in-house silicon) fail to close the software/ecosystem gap.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.8,
+            "probability_calibration": 1.0,
+            "aggregate": 0.95,
+            "comment": "The falsifier is verifiable within 12 months, directly breaks the share assumption, uses named but slightly qualitative indicators, and the 0.25 probability is defensible."
+          },
+          "latency_seconds": 19.074
+        },
+        {
+          "fixture_slug": "ai-capex",
+          "falsifier": {
+            "failure_mode": "NVDA reports gross margins falling to 63% or below in a quarterly filing, driven by ASP erosion as supply constraints ease and competition intensifies for non-flagship SKUs.",
+            "probability": 0.15,
+            "leading_indicator": "Weekly tracking of H100/B200 spot rental prices on cloud GPU marketplaces (e.g., Vast.ai, RunPod) and reseller prices on secondary markets; a sustained 10%+ month-over-month decline in average per-GPU-hour rental rates signals impending ASP pressure.",
+            "breaks_assumption": "Gross margins remain above 65% as supply constraints ease without triggering ASP compression.",
+            "horizon": "9 months"
+          },
+          "targeted_assumption": "Gross margins remain above 65% as supply constraints ease without triggering ASP compression.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.9,
+            "aggregate": 0.975,
+            "comment": "The falsifier is specific and verifiable within 9 months, directly breaks the assumption, has a concrete weekly leading indicator, and the 0.15 probability is defensible for a sharp margin erosion given NVDA's pricing power."
+          },
+          "latency_seconds": 19.074
+        },
+        {
+          "fixture_slug": "china-adr-overhang",
+          "falsifier": {
+            "failure_mode": "PCAOB inspection access is not renewed or materially restricted, raising delisting risk",
+            "probability": 0.35,
+            "leading_indicator": "Weekly SEC and PCAOB statements on negotiations, US-China political tensions headlines, and auditor registration updates",
+            "breaks_assumption": "PCAOB inspection access to China-based auditors is renewed at every annual review through 2027 without material restriction.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "PCAOB inspection access to China-based auditors is renewed at every annual review through 2027 without material restriction.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.8,
+            "probability_calibration": 0.3,
+            "aggregate": 0.775,
+            "comment": "Event is verifiable within 6 months via official statements and directly breaks the assumption, but leading indicator lacks a single quantifiable metric and 35% probability seems high for a short-horizon binary event."
+          },
+          "latency_seconds": 17.609
+        },
+        {
+          "fixture_slug": "china-adr-overhang",
+          "falsifier": {
+            "failure_mode": "Alibaba Cloud revenue growth falls below 15% YoY in any of the upcoming quarterly reports",
+            "probability": 0.7,
+            "leading_indicator": "Monthly cloud infrastructure spending data from Synergy Research Group or IDC, and Alibaba Cloud's quarterly client wins / capex guidance in earnings calls",
+            "breaks_assumption": "Alibaba Cloud revenue grows at least 15% YoY in each of the next eight reported quarters.",
+            "horizon": "3 months"
+          },
+          "targeted_assumption": "Alibaba Cloud revenue grows at least 15% YoY in each of the next eight reported quarters.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.2,
+            "probability_calibration": 0.0,
+            "aggregate": 0.55,
+            "comment": "The leading indicator data is only quarterly, not weekly checkable, and the 0.7 probability massively understates the near-certainty of below-15% growth given Alibaba Cloud's current single-digit growth rates."
+          },
+          "latency_seconds": 17.609
+        },
+        {
+          "fixture_slug": "china-adr-overhang",
+          "falsifier": {
+            "failure_mode": "China NBS retail sales ex-auto grows \u22645% YoY in at least two of the next four calendar quarters",
+            "probability": 0.4,
+            "leading_indicator": "Weekly Wind Information consumer spending tracker, major e-commerce platform GMV trends, and monthly NBS advance retail trade estimates",
+            "breaks_assumption": "Chinese household-consumption growth (NBS retail sales ex-auto) exceeds 5% YoY in at least three of the next four calendar quarters.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "Chinese household-consumption growth (NBS retail sales ex-auto) exceeds 5% YoY in at least three of the next four calendar quarters.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.9,
+            "probability_calibration": 1.0,
+            "aggregate": 0.975,
+            "comment": "The falsifier is directly verifiable via quarterly NBS releases within 12 months, logically breaks the assumption, uses concrete leading indicators (weekly Wind tracker, monthly NBS estimates) with minor vagueness on e-commerce GMV, and a 0.4 probability is defensible given macro uncertainty."
+          },
+          "latency_seconds": 17.609
+        },
+        {
+          "fixture_slug": "defence-procurement",
+          "falsifier": {
+            "failure_mode": "Political gridlock over debt ceiling leads to a continuing resolution flat-lining FY2026 DoD budget, preventing 3% nominal growth.",
+            "probability": 0.35,
+            "leading_indicator": "Weekly Congressional Budget Office (CBO) updates to FY2026 baseline and news of continuing resolution debates",
+            "breaks_assumption": "US Department of Defense base topline (excluding OCO) grows at least 3% nominal each year through FY2028.",
+            "horizon": "9 months"
+          },
+          "targeted_assumption": "US Department of Defense base topline (excluding OCO) grows at least 3% nominal each year through FY2028.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.3,
+            "probability_calibration": 0.9,
+            "aggregate": 0.8,
+            "comment": "The falsifier is clearly verifiable within 9 months and directly breaks the assumption, but the leading indicator's 'weekly CBO updates' are not actually available weekly, reducing specificity; the 0.35 probability is plausible for this scenario."
+          },
+          "latency_seconds": 28.294
+        },
+        {
+          "fixture_slug": "defence-procurement",
+          "falsifier": {
+            "failure_mode": "Economic recession in Germany and France causes defence budget cuts, resulting in fewer than 18 NATO members meeting 2% by end of 2027.",
+            "probability": 0.45,
+            "leading_indicator": "Weekly polling of European Commission economic sentiment indicators and national budget draft submissions",
+            "breaks_assumption": "At least 18 of 32 NATO members meet or exceed the 2% of GDP defence spending floor by end of 2027.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "At least 18 of 32 NATO members meet or exceed the 2% of GDP defence spending floor by end of 2027.",
+          "score": {
+            "horizon_observability": 0.2,
+            "assumption_coherence": 0.6,
+            "indicator_specificity": 0.4,
+            "probability_calibration": 0.3,
+            "aggregate": 0.375,
+            "comment": "The event is not verifiable within 12 months (2027 outcome), the recession cuts may not break the 18-country assumption, weekly data sources are vague/unavailable, and 0.45 seems overstated for a 12-month chain."
+          },
+          "latency_seconds": 28.294
+        },
+        {
+          "fixture_slug": "defence-procurement",
+          "falsifier": {
+            "failure_mode": "Major F-35 program restructuring or foreign order cancellations cause Lockheed backlog to slip below $150B at FY2025 year-end.",
+            "probability": 0.25,
+            "leading_indicator": "Weekly GAO protest log for major Lockheed contracts and news of international F-35 deal delays",
+            "breaks_assumption": "Lockheed Martin's reported backlog stays above $150B at every fiscal year-end through 2027.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "Lockheed Martin's reported backlog stays above $150B at every fiscal year-end through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.9,
+            "probability_calibration": 0.6,
+            "aggregate": 0.875,
+            "comment": "The falsifier directly breaks the assumption with a verifiable event and a mostly specific indicator, but the 0.25 probability seems moderately high for a 6-month horizon given strong defense spending tailwinds."
+          },
+          "latency_seconds": 28.294
+        },
+        {
+          "fixture_slug": "energy-transition",
+          "falsifier": {
+            "failure_mode": "Hyperscaler data-center new capacity contracts fall below 2 GW per quarter, putting the cumulative total by end-2027 on track for less than 30 GW.",
+            "probability": 0.2,
+            "leading_indicator": "Weekly US hyperscaler data-center leasing volume (MW) from JLL's Data Center Outlook tracker.",
+            "breaks_assumption": "At least 30 GW of new hyperscaler data-centre nameplate capacity is contracted in the US by end of 2027.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "At least 30 GW of new hyperscaler data-centre nameplate capacity is contracted in the US by end of 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.6,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.9,
+            "aggregate": 0.875,
+            "comment": "The quarterly rate dip is observable but only a probabilistic indicator, not a definitive break of the end-2027 cumulative assumption."
+          },
+          "latency_seconds": 25.849
+        },
+        {
+          "fixture_slug": "energy-transition",
+          "falsifier": {
+            "failure_mode": "PJM capacity auction clearing price for the 2026/2027 delivery year drops below $200/MW-day.",
+            "probability": 0.15,
+            "leading_indicator": "Weekly PJM forward capacity auction price assessments from S&P Global Platts Megawatt Daily.",
+            "breaks_assumption": "PJM capacity auction clearing prices stay above $200/MW-day through 2027.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "PJM capacity auction clearing prices stay above $200/MW-day through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.9,
+            "aggregate": 0.975,
+            "comment": "The falsifier is well-specified with a clear weekly indicator and directly tests the assumption; the 15% probability is reasonable given current auction results."
+          },
+          "latency_seconds": 25.849
+        },
+        {
+          "fixture_slug": "energy-transition",
+          "falsifier": {
+            "failure_mode": "Fewer than two new behind-the-meter nuclear PPAs at a premium to spot are announced by the end of the 12-month period.",
+            "probability": 0.25,
+            "leading_indicator": "Weekly monitoring of nuclear PPA announcements via Platts Nuclear Fuel and NEI press releases.",
+            "breaks_assumption": "At least two more behind-the-meter nuclear PPAs at premium to spot are announced in the next 12 months.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "At least two more behind-the-meter nuclear PPAs at premium to spot are announced in the next 12 months.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.8,
+            "aggregate": 0.95,
+            "comment": "Probability of 0.25 for fewer than two announcements is defensible but might slightly understate the rarity and complexity of such nuclear PPAs."
+          },
+          "latency_seconds": 25.849
+        },
+        {
+          "fixture_slug": "glp-1",
+          "falsifier": {
+            "failure_mode": "Trailing 4-week YoY US retail prescription growth for Tirzepatide falls below 30% and stays there for four consecutive weeks, signaling a break from the 30% annual growth trend.",
+            "probability": 0.25,
+            "leading_indicator": "Weekly IQVIA NPA prescription volume data for Mounjaro/Zepbound showing a rolling 4-week YoY growth rate dropping to <30% (monitorable via Bloomberg or Symphony Health dashboards).",
+            "breaks_assumption": "Tirzepatide US retail prescription volume grows at least 30% YoY through end of 2027.",
+            "horizon": "9 months"
+          },
+          "targeted_assumption": "Tirzepatide US retail prescription volume grows at least 30% YoY through end of 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.3,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.8,
+            "aggregate": 0.775,
+            "comment": "The event is verifiable within 9 months and the indicator is specified precisely, but a 4-week rolling growth dip does not directly break the annual 30% YoY assumption, making coherence weak; the 0.25 probability is defensible for a short-term dip."
+          },
+          "latency_seconds": 29.171
+        },
+        {
+          "fixture_slug": "glp-1",
+          "falsifier": {
+            "failure_mode": "The 2025 KFF Employer Health Benefits Survey reports that fewer than 50% of large employers cover GLP-1 obesity drugs, with the year-over-year increase slowing below the pace needed to reach 60% by end of 2026.",
+            "probability": 0.35,
+            "leading_indicator": "KFF's annual survey results (released Q3 2025) showing the exact coverage percentage among large firms; also track quarterly Mercer or Business Group on Health survey snapshots for earlier warnings.",
+            "breaks_assumption": "At least 60% of large US employer-sponsored health plans cover GLP-1s for obesity (not just diabetes) by end of 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "At least 60% of large US employer-sponsored health plans cover GLP-1s for obesity (not just diabetes) by end of 2026.",
+          "score": {
+            "horizon_observability": 0.0,
+            "assumption_coherence": 0.9,
+            "indicator_specificity": 0.2,
+            "probability_calibration": 0.0,
+            "aggregate": 0.275,
+            "comment": "The 2025 KFF survey release in Q3 2025 falls outside the 12-month horizon, so the event cannot be verified in time; the probability is thus miscalibrated, and the annual survey is not a weekly-checkable indicator."
+          },
+          "latency_seconds": 29.171
+        },
+        {
+          "fixture_slug": "glp-1",
+          "falsifier": {
+            "failure_mode": "A newly launched GLP-1 obesity competitor (e.g., VK2735 or orforglipron from a rival) captures >10% of US total obesity GLP-1 prescriptions within 6-9 months of launch, putting it on a trajectory to exceed 15% market share before 2028.",
+            "probability": 0.2,
+            "leading_indicator": "Weekly IQVIA WRx obesity segment data tracking the new entrant's total prescription share; initial trigger when NRx share crosses 8%.",
+            "breaks_assumption": "No new entrant captures more than 15% of the GLP-1 obesity market (by US Rx share) before 2028.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "No new entrant captures more than 15% of the GLP-1 obesity market (by US Rx share) before 2028.",
+          "score": {
+            "horizon_observability": 0.6,
+            "assumption_coherence": 0.4,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.8,
+            "aggregate": 0.7,
+            "comment": "The falsifier event (10% share in 6-9 months) is a proxy, not a direct breach of the 15% before 2028 assumption, and observability is contingent on an early launch within the 12-month horizon."
+          },
+          "latency_seconds": 29.171
+        },
+        {
+          "fixture_slug": "regional-banking",
+          "falsifier": {
+            "failure_mode": "An unexpected recession scare or aggressive Fed easing causes the 2s10s Treasury spread to invert and remain negative on more than 20% of trading days over a sustained period, rendering the 80% positive-day threshold unattainable through end of 2026.",
+            "probability": 0.2,
+            "leading_indicator": "Daily 2s10s US Treasury yield spread (Bloomberg or FRED), checked weekly for consecutive negative closes.",
+            "breaks_assumption": "The 2s10s US Treasury spread stays positive on at least 80% of trading days through end of 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "The 2s10s US Treasury spread stays positive on at least 80% of trading days through end of 2026.",
+          "score": {
+            "horizon_observability": 0.95,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.85,
+            "aggregate": 0.95,
+            "comment": "The falsifier event (sustained inversion >20% of trading days) is verifiable in 12 months via daily spread data from Bloomberg/FRED, directly contradicts the 80%-positive assumption, and 0.2 probability is a reasonable estimate for a recession-driven inversion."
+          },
+          "latency_seconds": 18.268
+        },
+        {
+          "fixture_slug": "regional-banking",
+          "falsifier": {
+            "failure_mode": "KeyCorp's reported NIM stagnates or contracts YoY over the next four quarters as deposit betas remain sticky and loan yields reprice slower than expected, making a cumulative 20 bps expansion from the 2024 trough by end of fiscal 2026 extremely unlikely.",
+            "probability": 0.35,
+            "leading_indicator": "KeyCorp quarterly earnings releases (NIM figure), checked after each report; compare to prior-year quarter.",
+            "breaks_assumption": "KeyCorp's net interest margin expands at least 20 bps from its 2024 trough by end of fiscal 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "KeyCorp's net interest margin expands at least 20 bps from its 2024 trough by end of fiscal 2026.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.2,
+            "indicator_specificity": 0.4,
+            "probability_calibration": 0.8,
+            "aggregate": 0.6,
+            "comment": "The falsifier event is clearly verifiable within 12 months, but stagnation alone does not logically break the end-2026 expansion assumption; the NIM indicator is concrete but only available quarterly, not weekly; the 0.35 probability is defensible for a 12-month outlook."
+          },
+          "latency_seconds": 18.268
+        },
+        {
+          "fixture_slug": "regional-banking",
+          "falsifier": {
+            "failure_mode": "Office-CRE net charge-off rate unexpectedly spikes above 2.5% within the next 12 months and continues to climb, driven by a wave of refinancing failures and deteriorating collateral values, precluding a peak below 2.5% and a YoY decline by end of 2026.",
+            "probability": 0.3,
+            "leading_indicator": "FDIC Quarterly Banking Profile: net charge-off rate on commercial real estate loans (nonresidential, nonfarm) reported for US regional banks, checked after each quarterly release.",
+            "breaks_assumption": "Office-CRE net charge-off rate at US regional banks (FDIC data) peaks below 2.5% and declines YoY by end of 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "Office-CRE net charge-off rate at US regional banks (FDIC data) peaks below 2.5% and declines YoY by end of 2026.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 1.0,
+            "comment": "The falsifier is verifiable within 12 months via quarterly FDIC data, directly breaks the peak assumption, specifies a concrete indicator, and the 0.3 probability is defensible."
+          },
+          "latency_seconds": 18.268
+        },
+        {
+          "fixture_slug": "reit-rate-sensitivity",
+          "falsifier": {
+            "failure_mode": "The 10-year yield does not stay below 4.5% due to accelerating inflation and hawkish Fed policy, breaking the rate anchor assumption.",
+            "probability": 0.35,
+            "leading_indicator": "Weekly US 10-year breakeven inflation rate and Fed funds futures pricing",
+            "breaks_assumption": "The US 10-year Treasury yield's monthly average stays below 4.5% in at least nine of the twelve months of 2026.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "The US 10-year Treasury yield's monthly average stays below 4.5% in at least nine of the twelve months of 2026.",
+          "score": {
+            "horizon_observability": 0.2,
+            "assumption_coherence": 0.3,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.7,
+            "aggregate": 0.55,
+            "comment": "The falsifier event is not verifiable within the stated 6-month horizon and does not directly break the 2026-specific assumption, though the leading indicator is concrete."
+          },
+          "latency_seconds": 18.778
+        },
+        {
+          "fixture_slug": "reit-rate-sensitivity",
+          "falsifier": {
+            "failure_mode": "Organic tenant billings growth falls below 5% YoY as carriers slash capex on 5G densification, deteriorating leasing momentum.",
+            "probability": 0.25,
+            "leading_indicator": "Quarterly capex guidance from major US wireless carriers (Verizon, T-Mobile, AT&T)",
+            "breaks_assumption": "American Tower's organic tenant billings growth stays above 5% YoY in each of the next eight reported quarters.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "American Tower's organic tenant billings growth stays above 5% YoY in each of the next eight reported quarters.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.8,
+            "aggregate": 0.95,
+            "comment": "Falsifier directly breaks the assumption with a verifiable event, and the 0.25 probability is defensible given historical growth trends."
+          },
+          "latency_seconds": 18.778
+        },
+        {
+          "fixture_slug": "reit-rate-sensitivity",
+          "falsifier": {
+            "failure_mode": "AMT loses investment-grade rating from at least one major agency due to rising leverage and/or operational weakness, failing the rating assumption.",
+            "probability": 0.15,
+            "leading_indicator": "Monthly updates of AMT's net debt to EBITDA ratio and credit rating outlooks from S&P/Moody's/Fitch",
+            "breaks_assumption": "AMT achieves an investment-grade credit rating from at least two of S&P / Moody's / Fitch at every quarter-end through 2027.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "AMT achieves an investment-grade credit rating from at least two of S&P / Moody's / Fitch at every quarter-end through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.2,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.6,
+            "aggregate": 0.7,
+            "comment": "The falsifier would not necessarily break the assumption because losing investment-grade from one agency could still leave at least two, so the assumption of 'at least two' remains intact."
+          },
+          "latency_seconds": 18.778
+        },
+        {
+          "fixture_slug": "semi-pricing-power",
+          "falsifier": {
+            "failure_mode": "A major leading-edge customer (Apple, NVIDIA, or AMD) unexpectedly slashes orders, causing N3/N2 utilisation to dip below 90% within two quarters.",
+            "probability": 0.3,
+            "leading_indicator": "Weekly TSMC factory output reports (e.g., from Taiwan Economic News) or the SEMI book-to-bill ratio for 3nm equipment, which would show a sustained drop.",
+            "breaks_assumption": "Leading-edge (\u22643nm) capacity utilisation stays above 90% for the next 8 quarters.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "Leading-edge (\u22643nm) capacity utilisation stays above 90% for the next 8 quarters.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.6,
+            "aggregate": 0.9,
+            "comment": "Probability of 0.3 for a leading-edge customer slash within 6 months seems elevated given current supply constraints and long-term agreements, but not egregious."
+          },
+          "latency_seconds": 12.917
+        },
+        {
+          "fixture_slug": "semi-pricing-power",
+          "falsifier": {
+            "failure_mode": "TSMC faces fierce price competition or customer resistance, leading to N3 wafer ASP increasing by less than 5% year-on-year in 2025, breaking the annual cadence.",
+            "probability": 0.25,
+            "leading_indicator": "Weekly analyst notes or news from key customers (e.g., Apple/NVIDIA) hinting at successful price renegotiations; also quarterly Taiwanese export data for advanced logic wafers showing ASP stagnation.",
+            "breaks_assumption": "TSMC raises N3 wafer ASPs at least 5% per year through 2027.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "TSMC raises N3 wafer ASPs at least 5% per year through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.3,
+            "probability_calibration": 0.9,
+            "aggregate": 0.8,
+            "comment": "The falsifier cleanly breaks the named assumption and is verifiable within 12 months, but the leading indicator relies on vague sources lacking concrete named data streams, while the 0.25 probability is broadly defensible."
+          },
+          "latency_seconds": 12.917
+        },
+        {
+          "fixture_slug": "semi-pricing-power",
+          "falsifier": {
+            "failure_mode": "Samsung Foundry and Intel Foundry Services combined secure several high-volume leading-edge design wins, indicating they are on track to surpass 10% demand share by 2026.",
+            "probability": 0.2,
+            "leading_indicator": "Weekly public statements or press releases from Samsung/Intel about new customer commitments for 3nm/GAA/18A, and independent yield improvement reports.",
+            "breaks_assumption": "Samsung Foundry and Intel Foundry Services do not capture more than 10% combined of leading-edge demand by 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "Samsung Foundry and Intel Foundry Services do not capture more than 10% combined of leading-edge demand by 2026.",
+          "score": {
+            "horizon_observability": 0.9,
+            "assumption_coherence": 0.8,
+            "indicator_specificity": 0.9,
+            "probability_calibration": 0.9,
+            "aggregate": 0.875,
+            "comment": "The falsifier provides a tangible early warning via design wins, though it is a proxy for the assumption rather than a direct breach, and the leading indicator is concrete with weekly checkable press releases."
+          },
+          "latency_seconds": 12.917
+        }
+      ]
+    },
+    {
+      "model": "deepseek:deepseek-v4-flash",
+      "fixtures_run": [
+        "ai-capex",
+        "china-adr-overhang",
+        "defence-procurement",
+        "energy-transition",
+        "glp-1",
+        "regional-banking",
+        "reit-rate-sensitivity",
+        "semi-pricing-power"
+      ],
+      "total_latency_seconds": 172.325,
+      "errors": [
+        "pre_mortem_failed: semi-pricing-power: SSLError(MaxRetryError(\"HTTPSConnectionPool(host='api.deepseek.com', port=443): Max retries exceeded with url: /chat/completions (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)')))\"))"
+      ],
+      "scored_falsifiers": [
+        {
+          "fixture_slug": "ai-capex",
+          "falsifier": {
+            "failure_mode": "Hyperscaler AI capex growth falls below 15% YoY due to macroeconomic headwinds or reduced near-term AI ROI confidence, triggering a downward revision of the 20% growth assumption.",
+            "probability": 0.25,
+            "leading_indicator": "Weekly count of press releases announcing new hyperscaler data center builds (e.g., Amazon, Google, Microsoft); a sustained decline of 30% or more over four consecutive weeks signals reduced capex commitment.",
+            "breaks_assumption": "Hyperscaler AI capex grows at least 20% YoY each year through 2027.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "Hyperscaler AI capex grows at least 20% YoY each year through 2027.",
+          "score": {
+            "horizon_observability": 0.9,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.9,
+            "probability_calibration": 1.0,
+            "aggregate": 0.95,
+            "comment": "The falsifier is well-defined with a clear leading indicator, directly tests the assumption, and has a reasonable probability; the horizon observability is slightly imperfect due to annual growth calculation from quarterly data."
+          },
+          "latency_seconds": 9.969
+        },
+        {
+          "fixture_slug": "ai-capex",
+          "falsifier": {
+            "failure_mode": "AMD's MI300X or a custom ASIC (e.g., Google TPU v5, AWS Trainium2) wins a key inference deployment at a major hyperscaler, demonstrating software ecosystem parity and eroding NVDA share below 75%.",
+            "probability": 0.15,
+            "leading_indicator": "Weekly announcements of production AI workloads switching from NVIDIA to AMD or in-house accelerators (tracked via press releases, blog posts, or earnings calls); a single high-volume win by a competitor is sufficient to trigger this falsifier.",
+            "breaks_assumption": "NVDA accelerator share stays above 75% as competitors (AMD, Intel, in-house silicon) fail to close the software/ecosystem gap.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "NVDA accelerator share stays above 75% as competitors (AMD, Intel, in-house silicon) fail to close the software/ecosystem gap.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 1.0,
+            "comment": "The falsifier is well-specified, directly breaking the assumption with a verifiable event within 12 months, using a concrete leading indicator, and a defensible probability."
+          },
+          "latency_seconds": 9.969
+        },
+        {
+          "fixture_slug": "ai-capex",
+          "falsifier": {
+            "failure_mode": "NVDA gross margins fall below 65% as Blackwell launch causes ASP compression from competition or inventory clearing, combined with higher wafer costs at TSMC.",
+            "probability": 0.2,
+            "leading_indicator": "Weekly average secondary-market pricing of NVDA H100 and B100 GPUs on eBay or major electronics resellers; a 15%+ drop in four weeks, or a sustained discount to MSRP, indicates weak pricing power and margin risk.",
+            "breaks_assumption": "Gross margins remain above 65% as supply constraints ease without triggering ASP compression.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "Gross margins remain above 65% as supply constraints ease without triggering ASP compression.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.9,
+            "probability_calibration": 0.9,
+            "aggregate": 0.95,
+            "comment": "The falsifier is directly observable via quarterly reports within 6 months, logically breaks the assumption, the indicator is concrete and measurable with only slight ambiguity in reseller sources, and a 0.2 probability for a margin drop of that magnitude in the near term is defensible."
+          },
+          "latency_seconds": 9.969
+        },
+        {
+          "fixture_slug": "china-adr-overhang",
+          "falsifier": {
+            "failure_mode": "PCAOB announces it is unable to complete full inspection of China-based auditors due to new Chinese government restrictions",
+            "probability": 0.15,
+            "leading_indicator": "Public statement from PCAOB regarding inspection status or Chinese regulatory changes",
+            "breaks_assumption": "PCAOB inspection access to China-based auditors is renewed at every annual review through 2027 without material restriction.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "PCAOB inspection access to China-based auditors is renewed at every annual review through 2027 without material restriction.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.9,
+            "aggregate": 0.975,
+            "comment": "Falsifier is a clear, verifiable event that directly breaks the assumption, with a specific public announcement as indicator, and a 15% probability is defensible for a 12-month geopolitical risk."
+          },
+          "latency_seconds": 4.823
+        },
+        {
+          "fixture_slug": "china-adr-overhang",
+          "falsifier": {
+            "failure_mode": "Alibaba Cloud reports quarterly revenue growth below 15% YoY in its next earnings release",
+            "probability": 0.35,
+            "leading_indicator": "Alibaba Group quarterly earnings report (e.g., for fiscal Q4 2025)",
+            "breaks_assumption": "Alibaba Cloud revenue grows at least 15% YoY in each of the next eight reported quarters.",
+            "horizon": "3 months"
+          },
+          "targeted_assumption": "Alibaba Cloud revenue grows at least 15% YoY in each of the next eight reported quarters.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.2,
+            "probability_calibration": 0.9,
+            "aggregate": 0.775,
+            "comment": "Falsifier directly breaks assumption and is verifiable in 3 months, but the leading indicator is the event itself, not a weekly checkable metric."
+          },
+          "latency_seconds": 4.823
+        },
+        {
+          "fixture_slug": "china-adr-overhang",
+          "falsifier": {
+            "failure_mode": "NBS reports monthly retail sales ex-auto growth below 5% YoY for the next calendar quarter's first month, signaling likely quarterly miss",
+            "probability": 0.25,
+            "leading_indicator": "National Bureau of Statistics monthly retail sales data (ex-automobiles) release",
+            "breaks_assumption": "Chinese household-consumption growth (NBS retail sales ex-auto) exceeds 5% YoY in at least three of the next four calendar quarters.",
+            "horizon": "3 months"
+          },
+          "targeted_assumption": "Chinese household-consumption growth (NBS retail sales ex-auto) exceeds 5% YoY in at least three of the next four calendar quarters.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.2,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.8,
+            "aggregate": 0.75,
+            "comment": "A single month below 5% does not guarantee the quarterly assumption is broken, so coherence is weak; probability is defensible but may be slightly conservative given recent volatility."
+          },
+          "latency_seconds": 4.823
+        },
+        {
+          "fixture_slug": "defence-procurement",
+          "falsifier": {
+            "failure_mode": "US DoD base budget fails to achieve 3% nominal growth in FY2026 baseline",
+            "probability": 0.45,
+            "leading_indicator": "Congressional Budget Office (CBO) weekly tracking of appropriations bills and continuing resolutions, focusing on DoD base topline vs. prior year",
+            "breaks_assumption": "US Department of Defense base topline (excluding OCO) grows at least 3% nominal each year through FY2028.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "US Department of Defense base topline (excluding OCO) grows at least 3% nominal each year through FY2028.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 0.6,
+            "probability_calibration": 1.0,
+            "aggregate": 0.9,
+            "comment": "The falsifier directly breaks the assumption and is verifiable within 12 months, but 'CBO weekly tracking' is not a standard product, making the indicator slightly vague."
+          },
+          "latency_seconds": 5.009
+        },
+        {
+          "fixture_slug": "defence-procurement",
+          "falsifier": {
+            "failure_mode": "Less than 15 NATO members meet the 2% of GDP defence spending floor by end of 2025",
+            "probability": 0.35,
+            "leading_indicator": "NATO's weekly published defence expenditure estimates for member states, focusing on percentage of GDP",
+            "breaks_assumption": "At least 18 of 32 NATO members meet or exceed the 2% of GDP defence spending floor by end of 2027.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "At least 18 of 32 NATO members meet or exceed the 2% of GDP defence spending floor by end of 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.4,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.2,
+            "aggregate": 0.65,
+            "comment": "Falsifier event by end-2025 doesn't logically break 2027 assumption but strongly challenges it; probability 0.35 seems too high given NATO's current trajectory."
+          },
+          "latency_seconds": 5.009
+        },
+        {
+          "fixture_slug": "defence-procurement",
+          "falsifier": {
+            "failure_mode": "Lockheed Martin's reported backlog drops below $150B in a quarterly financial report prior to FY2027",
+            "probability": 0.25,
+            "leading_indicator": "Lockheed Martin's weekly investor relations page, new contract announcements from DoD, and tracking of major program cancellations (e.g., F-35 cuts, CH-53K delays)",
+            "breaks_assumption": "Lockheed Martin's reported backlog stays above $150B at every fiscal year-end through 2027.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "Lockheed Martin's reported backlog stays above $150B at every fiscal year-end through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.0,
+            "indicator_specificity": 0.2,
+            "probability_calibration": 0.6,
+            "aggregate": 0.45,
+            "comment": "The falsifier does not break the assumption because a quarterly drop below $150B does not force any fiscal year-end below $150B, making it orthogonal to the claim."
+          },
+          "latency_seconds": 5.009
+        },
+        {
+          "fixture_slug": "energy-transition",
+          "falsifier": {
+            "failure_mode": "New data-centre capacity contracted in first half of 2025 totals less than 4 GW",
+            "probability": 0.4,
+            "leading_indicator": "Monthly tracker of hyperscaler data-centre capacity announcements from industry reports",
+            "breaks_assumption": "At least 30 GW of new hyperscaler data-centre nameplate capacity is contracted in the US by end of 2027.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "At least 30 GW of new hyperscaler data-centre nameplate capacity is contracted in the US by end of 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.0,
+            "indicator_specificity": 0.2,
+            "probability_calibration": 0.8,
+            "aggregate": 0.5,
+            "comment": "Event is verifiable within 6 months but failing to hit 4 GW in H1 2025 does not directly contradict a cumulative 30 GW by end-2027; indicator source unnamed and vague; probability appears reasonable given base rates."
+          },
+          "latency_seconds": 5.408
+        },
+        {
+          "fixture_slug": "energy-transition",
+          "falsifier": {
+            "failure_mode": "The PJM Base Residual Auction for the 2025/2026 delivery year clears at or below $200/MW-day",
+            "probability": 0.3,
+            "leading_indicator": "PJM announcement of auction results for 2025/2026 delivery",
+            "breaks_assumption": "PJM capacity auction clearing prices stay above $200/MW-day through 2027.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "PJM capacity auction clearing prices stay above $200/MW-day through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.9,
+            "aggregate": 0.975,
+            "comment": "The falsifier is a specific, time-bound auction outcome that directly contradicts the assumption and has a credible 30% likelihood."
+          },
+          "latency_seconds": 5.408
+        },
+        {
+          "fixture_slug": "energy-transition",
+          "falsifier": {
+            "failure_mode": "No behind-the-meter nuclear PPA with a hyperscaler is announced in the next 6 months",
+            "probability": 0.2,
+            "leading_indicator": "Weekly news monitoring for PPA announcements involving nuclear plants and technology companies",
+            "breaks_assumption": "At least two more behind-the-meter nuclear PPAs at premium to spot are announced in the next 12 months.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "At least two more behind-the-meter nuclear PPAs at premium to spot are announced in the next 12 months.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 0.75,
+            "comment": "The falsifier event (zero announcements in 6 months) does not logically break the 12-month assumption of at least two announcements, so assumption_coherence is 0.0."
+          },
+          "latency_seconds": 5.408
+        },
+        {
+          "fixture_slug": "glp-1",
+          "falsifier": {
+            "failure_mode": "Tirzepatide US retail prescription volume growth rate drops below 20% YoY for a sustained period (e.g., 4 consecutive weeks), indicating demand is not maintaining 30% YoY growth trajectory.",
+            "probability": 0.25,
+            "leading_indicator": "Weekly IQVIA national prescription audit data showing tirzepatide total prescription volume year-over-year growth.",
+            "breaks_assumption": "Tirzepatide US retail prescription volume grows at least 30% YoY through end of 2027.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "Tirzepatide US retail prescription volume grows at least 30% YoY through end of 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 1.0,
+            "comment": "Falsifier event is clearly verifiable via weekly IQVIA data within six months, directly contradicts the 30% YoY assumption, uses a precise leading indicator, and the 0.25 probability is defensible for a six-month horizon given potential market dynamics."
+          },
+          "latency_seconds": 6.13
+        },
+        {
+          "fixture_slug": "glp-1",
+          "falsifier": {
+            "failure_mode": "A major large employer (Fortune 500) publicly announces it will not cover GLP-1s for obesity in 2026 plan year, reversing prior expansion expectations and signaling coverage tipping point may not reach 60% by end-2026.",
+            "probability": 0.2,
+            "leading_indicator": "Weekly scanning of press releases and benefit newsletters (e.g., from Mercer, Willis Towers Watson) for large employer benefit plan changes regarding GLP-1 obesity coverage.",
+            "breaks_assumption": "At least 60% of large US employer-sponsored health plans cover GLP-1s for obesity (not just diabetes) by end of 2026.",
+            "horizon": "8 months"
+          },
+          "targeted_assumption": "At least 60% of large US employer-sponsored health plans cover GLP-1s for obesity (not just diabetes) by end of 2026.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.2,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.9,
+            "aggregate": 0.775,
+            "comment": "The event of one employer opting out does not directly break the 60% coverage assumption, but observability, indicator specificity, and probability are sound."
+          },
+          "latency_seconds": 6.13
+        },
+        {
+          "fixture_slug": "glp-1",
+          "falsifier": {
+            "failure_mode": "Novo Nordisk's oral amycretin or another new entrant (e.g., Viking Therapeutics) captures >15% of US GLP-1 obesity prescriptions in a given month, indicating the market is fragmenting faster than expected.",
+            "probability": 0.15,
+            "leading_indicator": "Weekly trailing 4-week US prescription share data for obesity GLP-1 class from IQVIA or similar syndicated data.",
+            "breaks_assumption": "No new entrant captures more than 15% of the GLP-1 obesity market (by US Rx share) before 2028.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "No new entrant captures more than 15% of the GLP-1 obesity market (by US Rx share) before 2028.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 1.0,
+            "comment": "The falsifier is tightly linked, verifiable within 12 months via syndicated Rx data, uses a precise weekly share metric, and the 0.15 probability is defensible for a low-likelihood market shift."
+          },
+          "latency_seconds": 6.13
+        },
+        {
+          "fixture_slug": "regional-banking",
+          "falsifier": {
+            "failure_mode": "2s10s spread is negative on more than 20% of trading days over a 6-month period",
+            "probability": 0.25,
+            "leading_indicator": "Daily closing spread between 10-year and 2-year US Treasury yields",
+            "breaks_assumption": "The 2s10s US Treasury spread stays positive on at least 80% of trading days through end of 2026.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "The 2s10s US Treasury spread stays positive on at least 80% of trading days through end of 2026.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.2,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.7,
+            "aggregate": 0.725,
+            "comment": "The falsifier describes a 6-month condition that does not directly break the through-end-of-2026 assumption, so coherence is low; probability is plausible given recent inversion but could be slightly too optimistic."
+          },
+          "latency_seconds": 11.606
+        },
+        {
+          "fixture_slug": "regional-banking",
+          "falsifier": {
+            "failure_mode": "KeyCorp's reported net interest margin in quarterly earnings shows decline or stagnation relative to the prior quarter, indicating no expansion",
+            "probability": 0.3,
+            "leading_indicator": "Weekly change in KeyCorp's stock price relative to the KBW Regional Banking Index (KRX) as a proxy for NIM expectations",
+            "breaks_assumption": "KeyCorp's net interest margin expands at least 20 bps from its 2024 trough by end of fiscal 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "KeyCorp's net interest margin expands at least 20 bps from its 2024 trough by end of fiscal 2026.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 0.2,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 0.7,
+            "aggregate": 0.725,
+            "comment": "Quarterly NIM stagnation in 12 months does not necessarily break a 2026 expansion target; the leading indicator is concrete but stock price is a noisy proxy, and the 30% probability is defensible."
+          },
+          "latency_seconds": 11.606
+        },
+        {
+          "fixture_slug": "regional-banking",
+          "falsifier": {
+            "failure_mode": "Office-CRE net charge-off rate for US regional banks exceeds 2.5% in any quarter before end of 2026",
+            "probability": 0.35,
+            "leading_indicator": "Weekly change in the delinquency rate on office CMBS loans (from Trepp or Intex)",
+            "breaks_assumption": "Office-CRE net charge-off rate at US regional banks (FDIC data) peaks below 2.5% and declines YoY by end of 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "Office-CRE net charge-off rate at US regional banks (FDIC data) peaks below 2.5% and declines YoY by end of 2026.",
+          "score": {
+            "horizon_observability": 0.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 0.75,
+            "comment": "The falsifier's event window extends to end 2026, making it unverifiable within the stated 12-month horizon."
+          },
+          "latency_seconds": 11.606
+        },
+        {
+          "fixture_slug": "reit-rate-sensitivity",
+          "falsifier": {
+            "failure_mode": "US 10-year yield spikes above 4.5% on a sustained basis, dragging monthly averages higher and failing the condition for 2026",
+            "probability": 0.35,
+            "leading_indicator": "Weekly average of the 10-year Treasury yield (from FRED DGS10) closing above 4.5% for six out of any eight consecutive weeks",
+            "breaks_assumption": "The US 10-year Treasury yield's monthly average stays below 4.5% in at least nine of the twelve months of 2026.",
+            "horizon": "12 months"
+          },
+          "targeted_assumption": "The US 10-year Treasury yield's monthly average stays below 4.5% in at least nine of the twelve months of 2026.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 1.0,
+            "comment": "The falsifier event is directly verifiable within 12 months, directly breaks the named assumption, has a concrete weekly FRED-based indicator, and the stated 0.35 probability is reasonable for a sustained yield spike over a year."
+          },
+          "latency_seconds": 12.279
+        },
+        {
+          "fixture_slug": "reit-rate-sensitivity",
+          "falsifier": {
+            "failure_mode": "Wireless carriers cut capex or slow tower leasing, causing organic tenant billings growth to dip below 5% in a coming quarter",
+            "probability": 0.25,
+            "leading_indicator": "Total new macro tower announcements by Verizon, AT&T, and T-Mobile in the past 30 days (tracked via public press releases) falls below 100 towers",
+            "breaks_assumption": "American Tower's organic tenant billings growth stays above 5% YoY in each of the next eight reported quarters.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "American Tower's organic tenant billings growth stays above 5% YoY in each of the next eight reported quarters.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 1.0,
+            "comment": "The falsifier directly breaks the assumption, is verifiable within 6 months, uses a concrete leading indicator from public sources, and has a defensible probability."
+          },
+          "latency_seconds": 12.279
+        },
+        {
+          "fixture_slug": "reit-rate-sensitivity",
+          "falsifier": {
+            "failure_mode": "AMT's credit metrics deteriorate, triggering a downgrade by at least one major agency, breaking the two-agency minimum at a quarter-end",
+            "probability": 0.15,
+            "leading_indicator": "AMT's 5-year credit default swap spread (from Markit) rises above 250 bps and stays above that level for four consecutive weeks",
+            "breaks_assumption": "AMT achieves an investment-grade credit rating from at least two of S&P / Moody's / Fitch at every quarter-end through 2027.",
+            "horizon": "6 months"
+          },
+          "targeted_assumption": "AMT achieves an investment-grade credit rating from at least two of S&P / Moody's / Fitch at every quarter-end through 2027.",
+          "score": {
+            "horizon_observability": 1.0,
+            "assumption_coherence": 1.0,
+            "indicator_specificity": 1.0,
+            "probability_calibration": 1.0,
+            "aggregate": 1.0,
+            "comment": "The downgrade event is verifiable within 6 months, directly breaks the two-IG rating assumption, uses a specific weekly CDS indicator, and a 0.15 probability is defensible for a potential credit-rating change."
+          },
+          "latency_seconds": 12.279
+        }
+      ]
+    }
+  ]
+}
