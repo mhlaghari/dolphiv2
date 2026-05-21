@@ -7,17 +7,53 @@
 [![Ruff](https://img.shields.io/badge/ruff-clean-success)](pyproject.toml)
 [![Release](https://img.shields.io/badge/release-v0.2.0-blue)](https://github.com/mhlaghari/dolphiv2/releases/tag/v0.2.0)
 
-> The multi-agent investment researcher that **proves itself wrong before it recommends anything**.
+> **A thesis-interrogation primitive for investment research.** Python library + MCP server + CLI that proves a bull case wrong before recommending anything.
 
-Dolphi is a local-first, open-source research system inspired by
+Dolphi is a local-first, open-source research engine inspired by
 [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents).
-TradingAgents answers *"should I buy this ticker?"*. Dolphi answers a sharper
-pair of questions:
+TradingAgents answers *"should I buy this ticker?"*. Dolphi answers a sharper pair of questions:
 
 1. **What should I consider — and why?** (multi-source narrative discovery + theme expansion)
 2. **Where is this thesis weakest?** (a dedicated *Pre-Mortem Agent* whose only job is to break it)
 
+Use it three ways:
+- **As a library** — `from dolphi.api import evaluate` from inside your own trading agent.
+- **As an MCP server** — `dolphi-mcp` exposes evaluation, falsifier checks, and decision-log queries to Claude Desktop, Cursor, or any MCP client.
+- **As a CLI** — `dolphi --check` for the weekly Monday-morning research loop.
+
 For research and education only. Not financial, investment, or trading advice.
+
+```python
+from dolphi.api import evaluate
+
+result = evaluate(symbols=["NVDA", "AMD"], mock=True)
+for symbol, falsifiers in result.falsifiers.items():
+    print(f"\n{symbol} (fragility: {result.fragility[symbol]:.2f})")
+    for f in falsifiers:
+        print(f"  - {f.failure_mode} (watch: {f.leading_indicator})")
+```
+
+> The `dolphi.api` facade and `dolphi-mcp` server ship in v0.3 (in progress).
+
+---
+
+## Why this exists
+
+Most "LLM trading" projects are bull/bear simulators. A bull and a bear are
+**both forecasters**. They argue about the future, but neither of them
+tries to *disprove* the thesis. That's a missing epistemic step, and it's
+the step that separates research from rationalisation.
+
+Dolphi adds a **Pre-Mortem Agent** as a first-class node in the graph. After
+the bull/bear debate, this agent ignores the thesis entirely and asks the
+opposite question: *"What is the cheapest, fastest, most observable event
+that would prove all of this wrong?"* Every recommendation comes with three
+named falsifiers, each with a probability and a leading indicator you can
+monitor.
+
+If the falsifiers are cheap and likely, the recommendation gets downsized
+or dropped. If they are expensive and unlikely, the recommendation earns
+its weight.
 
 ---
 
@@ -90,6 +126,8 @@ python -m dolphi.eval \
 > judge rubric, and report format are versioned in this repository so the published
 > leaderboard remains independently re-runnable.*
 
+<!-- TODO: when T-EVAL runs, this section will link to docs/eval/falsifier_quality.md -->
+
 ---
 
 ## Walk-forward backtest (sanity check)
@@ -148,23 +186,11 @@ Monday." The data model already had every leading indicator persisted —
 
 ---
 
-## Why this exists
+## Glossary
 
-Most "LLM trading" projects are bull/bear simulators. A bull and a bear are
-**both forecasters**. They argue about the future, but neither of them
-tries to *disprove* the thesis. That's a missing epistemic step, and it's
-the step that separates research from rationalisation.
-
-Dolphi adds a **Pre-Mortem Agent** as a first-class node in the graph. After
-the bull/bear debate, this agent ignores the thesis entirely and asks the
-opposite question: *"What is the cheapest, fastest, most observable event
-that would prove all of this wrong?"* Every recommendation comes with three
-named falsifiers, each with a probability and a leading indicator you can
-monitor.
-
-If the falsifiers are cheap and likely, the recommendation gets downsized
-or dropped. If they are expensive and unlikely, the recommendation earns
-its weight.
+- **Falsifier** — a concrete scenario that would prove the bull case wrong. Each one names a leading indicator you can check weekly.
+- **Fragility** — how many of a thesis's load-bearing assumptions can be cheaply falsified. High fragility → smaller position size.
+- **Pre-Mortem Agent** — the agent that ignores the thesis and asks "what's the cheapest way this breaks?" before recommending a weight.
 
 ---
 
@@ -212,6 +238,11 @@ flowchart TD
 ## Quickstart
 
 ```bash
+# One-command demo (~30 s, no API keys)
+bash examples/quickstart.sh
+```
+
+```bash
 # Install (editable, with dev deps)
 pip install -e ".[dev]"
 
@@ -256,7 +287,7 @@ log, and the optional Chroma memory store.
 - One of:
   - [Ollama](https://ollama.ai) with at least one local model (e.g. `llama3:8b`) — default, free.
   - Or a key for OpenAI / OpenRouter / DeepSeek (set in `.env`).
-- Optional: `ALPHA_VANTAGE_KEY`, `NEWSAPI_KEY`, `BRAVE_API_KEY`,
+- Optional: `NEWSAPI_KEY`, `BRAVE_API_KEY`,
   `SEARXNG_BASE_URL` — each one unlocks an extra data source. None are
   required.
 
@@ -289,7 +320,7 @@ Environment variables override the file (`LLM_PROVIDER`, `LLM_MODEL`,
 dolphi/
 ├── agents/            bull · bear · debate · debate_judge · risk_* · pre_mortem · portfolio_manager
 ├── allocation/        deterministic portfolio sizer with risk caps + fragility + debate delta
-├── data/              yfinance · alpha_vantage · newsapi wrappers + SQLite cache
+├── data/              yfinance · newsapi wrappers + SQLite cache
 ├── graph/             LangGraph workflow wiring
 ├── ideas/             discovery pipeline (narrative + theme + ranking)
 ├── llm/               provider-agnostic client factory (Ollama + OpenAI-compatible)
