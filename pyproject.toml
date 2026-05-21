@@ -30,9 +30,13 @@ eval = [
     "anthropic>=0.40.0",
     "openai>=1.0.0",
 ]
+mcp = [
+    "mcp>=1.0.0",
+]
 
 [project.scripts]
 dolphi = "dolphi.cli:main"
+dolphi-mcp = "dolphi.mcp_server:main"
 
 [tool.setuptools.packages.find]
 include = ["dolphi*"]
