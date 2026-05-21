@@ -61,7 +61,6 @@ class Config:
     decision_log_path: Path = field(default_factory=lambda: _ensure_dir(_BASE_DIR) / "decision_log.md")
     universe_cache_dir: Path = field(default_factory=lambda: _ensure_dir(_BASE_DIR / "universe"))
     universe_max_age_hours: int = 24
-    alpha_vantage_key: Optional[str] = field(default_factory=lambda: os.getenv("ALPHA_VANTAGE_KEY"))
     newsapi_key: Optional[str] = field(default_factory=lambda: os.getenv("NEWSAPI_KEY"))
     brave_api_key: Optional[str] = field(default_factory=lambda: os.getenv("BRAVE_API_KEY"))
     searxng_base_url: Optional[str] = field(default_factory=lambda: os.getenv("SEARXNG_BASE_URL"))

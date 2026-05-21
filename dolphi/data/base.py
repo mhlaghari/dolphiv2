@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Optional
 
-from . import alpha_vantage, newsapi_wrapper, yfinance_wrapper
+from . import newsapi_wrapper, yfinance_wrapper
 from .cache import SQLiteCache
 
 logger = logging.getLogger(__name__)
@@ -61,7 +61,6 @@ class DataFetcher:
         mock: bool = False,
         *,
         newsapi_key: str | None = None,
-        alpha_vantage_key: str | None = None,
     ):
         self._skip_cache = skip_cache
         self._mock = mock
@@ -72,39 +71,23 @@ class DataFetcher:
 
         if newsapi_key:
             newsapi_wrapper.set_api_key(newsapi_key)
-        if alpha_vantage_key:
-            alpha_vantage.set_api_key(alpha_vantage_key)
 
         if cache is None:
             return
 
         yfinance_wrapper.set_persistent_cache(cache)
-        if alpha_vantage.is_available():
-            alpha_vantage.set_persistent_cache(cache)
         if newsapi_wrapper.is_available():
             newsapi_wrapper.set_persistent_cache(cache)
 
     def get_stock_price(self, symbol: str, date: Optional[str] = None) -> float:
         if self._mock:
             return self._mock_fetcher.get_stock_price(symbol, date)
-        try:
-            return yfinance_wrapper.get_stock_price(symbol, date, skip_cache=self._skip_cache)
-        except Exception as e:
-            logger.warning("yfinance failed for %s: %s, trying Alpha Vantage", symbol, e)
-            if alpha_vantage.is_available():
-                return alpha_vantage.get_stock_price(symbol, date, skip_cache=self._skip_cache)
-            raise
+        return yfinance_wrapper.get_stock_price(symbol, date, skip_cache=self._skip_cache)
 
     def get_financials(self, symbol: str) -> dict[str, Any]:
         if self._mock:
             return self._mock_fetcher.get_financials(symbol)
-        try:
-            return yfinance_wrapper.get_financials(symbol, skip_cache=self._skip_cache)
-        except Exception as e:
-            logger.warning("yfinance financials failed for %s: %s, trying Alpha Vantage", symbol, e)
-            if alpha_vantage.is_available():
-                return alpha_vantage.get_financials(symbol, skip_cache=self._skip_cache)
-            raise
+        return yfinance_wrapper.get_financials(symbol, skip_cache=self._skip_cache)
 
     def get_market_summary(self) -> dict[str, Any]:
         if self._mock:
